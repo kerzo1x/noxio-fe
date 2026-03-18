@@ -1,0 +1,15 @@
+:root {
+    /* Основная палитра */
+    --brand-black: #000000;
+    --brand-white: #ffffff;
+    --main-text-black: #21272A;
+    --brand-gray-dark: #D9D9D9;
+    --brand-gray-light: #F2F4F8; /* Для фона страниц */
+    
+    /* Акценты */
+    --text-link-color: #001D6C;
+    --color-error: #ef4444;
+
+    /* Геометрия */
+    --radius-auth: 0.75rem; /* 12px */
+}

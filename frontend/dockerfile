@@ -7,9 +7,9 @@ COPY package.json package-lock.json* ./
 #--legacy-peer-deps is couse of versions conflict
 RUN npm install --legacy-peer-deps 
 
-
 COPY . .
 
 EXPOSE 5173
 
 CMD ["npm", "run", "dev", "--", "--host"]
+#npm install vue-router@4 --legacy-peer-deps

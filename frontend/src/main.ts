@@ -1,5 +1,10 @@
 import { createApp } from 'vue'
-import './assets/main.css'
+import './assets/styles/main.css'
 import App from './App.vue'
+import router from './router' // Твой файл роутера
 
-createApp(App).mount('#app')
+const app = createApp(App)
+
+app.use(router) // Подключаем роутер к приложению
+
+app.mount('#app') // И только потом отображаем на странице
