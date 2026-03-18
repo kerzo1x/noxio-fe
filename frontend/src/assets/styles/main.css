@@ -1,14 +1,15 @@
 @import "tailwindcss";
-@import "./variables.css"; /* Если он в той же папке styles */
+@import "./variables.css";
+
 
 @theme {
-  --color-brand-black: var(--brand-black);
-  --color-brand-white: var(--brand-white);
-  --color-text-main: var(--main-text-black);
-  --color-brand-gray: var(--brand-gray-dark);
-  --color-link: var(--text-link-color);
-  --color-error: var(--color-error);
-  --color-surface: var(--brand-gray-light);
-  
-  --radius-auth: var(--radius-auth);
+    --color-brand-black: var(--brand-black);
+    --color-brand-white: var(--brand-white);
+    --color-text-main: var(--main-text-black);
+    --color-brand-gray: var(--brand-gray-dark);
+    --color-link: var(--text-link-color);
+    --color-error: var(--color-error);
+    --color-surface: var(--brand-gray-light);
+
+    --radius-auth: var(--radius-auth);
 }

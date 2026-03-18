@@ -6,6 +6,7 @@ const email = ref('')
 const password = ref('')
 const message = ref('')
 
+
 const handleLogin = async () => {
     if (!email.value || !password.value) {
         message.value = 'Please enter your email and password.'
@@ -40,6 +41,10 @@ const handleLogin = async () => {
         isLoading.value = false
     }
 }
+
+const handleGoogleLogin = () => {
+    console.log('Google Auth: Logic will be implemented here later.')
+}
 </script>
 
 <template>
@@ -50,7 +55,7 @@ const handleLogin = async () => {
 
         <div class="w-full lg:w-1/2 flex items-center justify-center p-8 bg-brand-white">
             <div class="w-full max-w-md space-y-8">
-                <h1 class="text-4xl font-bold">Sign In</h1>
+                <h1 class="text-4xl font-bold">Log In</h1>
 
                 <form @submit.prevent="handleLogin" class="space-y-4">
                     <div class="space-y-1">
@@ -65,15 +70,27 @@ const handleLogin = async () => {
                     </button>
                 </form>
 
-                <p v-if="message"
-                    :class="['text-center text-sm font-medium', message.includes('successful') ? 'text-green-600' : 'text-error']">
-                    {{ message }}
-                </p>
+
+                <div class="text-center my-4 text-sm text-brand-gray uppercase font-medium">
+                    or
+                </div>
+
+                <button type="button"
+                    class="w-full flex items-center justify-center gap-3 p-3 border border-brand-gray rounded-auth font-semibold hover:bg-surface transition-all text-brand-black"
+                    @click="handleGoogleLogin">
+                    <img src="../../assets/img/google.png" class="w-5 h-5" alt="Google" />
+                    Continue with Google
+                </button>
 
                 <div class="text-center text-sm">
                     <span class="text-brand-gray">Don't have an account? </span>
                     <a href="/register" class="text-brand-black font-semibold hover:underline">Sign up</a>
                 </div>
+
+                <p v-if="message"
+                    :class="['text-center text-sm font-medium', message.includes('successful') ? 'text-green-600' : 'text-error']">
+                    {{ message }}
+                </p>
             </div>
         </div>
     </div>
