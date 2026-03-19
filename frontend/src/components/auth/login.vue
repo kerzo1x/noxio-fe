@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import router from '../../router'
+
 
 const isLoading = ref(false)
 const email = ref('')
@@ -58,37 +60,33 @@ const handleGoogleLogin = () => {
                 <h1 class="text-4xl font-bold">Log In</h1>
 
                 <form @submit.prevent="handleLogin" class="space-y-4">
-                    <div class="space-y-1">
+                    <div class="form-field">
                         <input v-model="email" type="email" placeholder="Email" class="form-input" required />
+                        <div class="input-focus-border"></div>
                     </div>
-                    <div class="space-y-1">
+                    <div class="form-field">
                         <input v-model="password" type="password" placeholder="Password" class="form-input" required />
+                        <div class="input-focus-border"></div>
                     </div>
-
                     <button type="submit" :disabled="isLoading" class="btn-primary">
                         {{ isLoading ? 'Signing in...' : 'Sign in' }}
                     </button>
                 </form>
-
-
                 <div class="text-center my-4 text-sm text-brand-gray uppercase font-medium">
                     or
                 </div>
-
-                <button type="button"
-                    class="w-full flex items-center justify-center gap-3 p-3 border border-brand-gray rounded-auth font-semibold hover:bg-surface transition-all text-brand-black"
-                    @click="handleGoogleLogin">
+                <button type="button" class="google-btn" @click="handleGoogleLogin">
                     <img src="../../assets/img/google.png" class="w-5 h-5" alt="Google" />
                     Continue with Google
                 </button>
-
-                <div class="text-center text-sm">
+                <div class="text-center text-sm mt-6">
                     <span class="text-brand-gray">Don't have an account? </span>
-                    <a href="/register" class="text-brand-black font-semibold hover:underline">Sign up</a>
+                    <router-link to="/register" class="text-brand-black font-semibold hover:underline transition-all">
+                        Sign up
+                    </router-link>
                 </div>
-
                 <p v-if="message"
-                    :class="['text-center text-sm font-medium', message.includes('successful') ? 'text-green-600' : 'text-error']">
+                    :class="['text-center text-sm font-medium mt-4', message.includes('successful') ? 'text-green-600' : 'text-error']">
                     {{ message }}
                 </p>
             </div>
@@ -99,11 +97,44 @@ const handleGoogleLogin = () => {
 <style scoped>
 @reference "../../assets/styles/main.css";
 
-.form-input {
-    @apply w-full p-3 bg-brand-white border border-brand-gray rounded-auth outline-none focus:ring-2 focus:ring-brand-black transition-all placeholder:text-brand-gray;
+.form-field {
+  @apply relative;
 }
 
+.form-input {
+  /* Базовый стиль с медленным переходом цвета */
+  @apply w-full p-3 bg-brand-white border border-brand-gray rounded-auth outline-none 
+         transition-colors duration-500 placeholder:text-brand-gray text-brand-black;
+}
+
+/* Скрытый черный слой контура (проявляется плавно) */
+.input-focus-border {
+  @apply absolute inset-0 rounded-auth pointer-events-none border-2 border-brand-black opacity-0;
+  transition: opacity 0.8s ease-in-out;
+}
+
+/* При фокусе на инпуте черный контур плавно проявляется */
+.form-input:focus + .input-focus-border {
+  @apply opacity-100;
+}
+
+/* Скрываем стандартный бордер при фокусе */
+.form-input:focus {
+  border-color: transparent;
+}
+
+/* Кнопка Sign In (твоя любимая версия) */
 .btn-primary {
-    @apply w-full bg-brand-black text-brand-white p-3 rounded-auth font-semibold hover:opacity-90 transition-all disabled:bg-brand-gray;
+  @apply w-full bg-brand-black text-brand-white p-3 rounded-auth font-semibold 
+         hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] 
+         transition-all duration-200 
+         disabled:bg-brand-gray disabled:cursor-not-allowed disabled:scale-100;
+}
+
+/* Кнопка Google */
+.google-btn {
+  @apply w-full flex items-center justify-center gap-3 p-3 border border-brand-gray 
+         rounded-auth font-semibold hover:bg-surface transition-all text-brand-black
+         hover:scale-[1.02] active:scale-[0.98] duration-200;
 }
 </style>

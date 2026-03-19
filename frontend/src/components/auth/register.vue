@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import router from '../../router'
 
 const isLoading = ref(false)
 const firstName = ref('')
@@ -32,10 +33,9 @@ const handleRegister = async () => {
 
     if (response.ok) {
       message.value = 'Registration successful! Redirecting...'
-
       // Используем window.location.href для перехода по полному адресу
       setTimeout(() => {
-        window.location.href = 'http://localhost:3000/auth/login'
+        router.push('/login')
       }, 1500) // Задержка 1.5 сек, чтобы пользователь успел прочитать сообщение
     } else {
       const data = await response.json()
@@ -65,11 +65,25 @@ const handleGoogleLogin = () => {
 
         <form @submit.prevent="handleRegister" class="space-y-4">
           <div class="flex gap-4">
-            <input v-model="firstName" type="text" placeholder="First Name" class="form-input" required />
-            <input v-model="lastName" type="text" placeholder="Last Name" class="form-input" required />
+            <div class="form-field flex-1">
+              <input v-model="firstName" type="text" placeholder="First Name" class="form-input" required />
+              <div class="input-focus-border"></div>
+            </div>
+            <div class="form-field flex-1">
+              <input v-model="lastName" type="text" placeholder="Last Name" class="form-input" required />
+              <div class="input-focus-border"></div>
+            </div>
           </div>
-          <input v-model="email" type="email" placeholder="Email" class="form-input" required />
-          <input v-model="password" type="password" placeholder="Password" class="form-input" required />
+
+          <div class="form-field">
+            <input v-model="email" type="email" placeholder="Email" class="form-input" required />
+            <div class="input-focus-border"></div>
+          </div>
+
+          <div class="form-field">
+            <input v-model="password" type="password" placeholder="Password" class="form-input" required />
+            <div class="input-focus-border"></div>
+          </div>
 
           <button type="submit" :disabled="isLoading" class="btn-primary">
             <span v-if="isLoading">Processing...</span>
@@ -94,7 +108,9 @@ const handleGoogleLogin = () => {
             Log in
           </router-link>
         </div>
-        
+
+
+
         <p v-if="message"
           :class="['text-center text-sm font-medium', message.includes('successful') ? 'text-green-600' : 'text-error']">
           {{ message }}
@@ -106,10 +122,39 @@ const handleGoogleLogin = () => {
 
 <style scoped>
 @reference "../../assets/styles/main.css";
-.form-input {
-  @apply w-full p-3 bg-brand-white border border-brand-gray rounded-auth outline-none focus:ring-2 focus:ring-brand-black transition-all placeholder:text-brand-gray;
+
+.form-field {
+  @apply relative;
 }
+
+.form-input {
+  /* Базовая серая граница */
+  @apply w-full p-3 bg-brand-white border border-brand-gray rounded-auth outline-none 
+         transition-colors duration-500 placeholder:text-brand-gray text-brand-black;
+}
+
+/* Скрытый черный слой контура */
+.input-focus-border {
+  @apply absolute inset-0 rounded-auth pointer-events-none border-2 border-brand-black opacity-0;
+  /* Медленный переход прозрачности */
+  transition: opacity 0.8s ease-in-out;
+}
+
+/* При фокусе на инпуте черный контур плавно проявляется */
+.form-input:focus + .input-focus-border {
+  @apply opacity-100;
+}
+
+/* КНОПКИ (твоя любимая версия) */
 .btn-primary {
-  @apply w-full bg-brand-black text-brand-white p-3 rounded-auth font-semibold hover:opacity-90 transition-all disabled:bg-brand-gray disabled:cursor-not-allowed;
+  @apply w-full bg-brand-black text-brand-white p-3 rounded-auth font-semibold 
+         hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] 
+         transition-all duration-200 
+         disabled:bg-brand-gray disabled:cursor-not-allowed disabled:scale-100;
+}
+
+/* Кнопка Google */
+button[type="button"] {
+  @apply transition-all duration-200 hover:scale-[1.02] active:scale-[0.98];
 }
 </style>
