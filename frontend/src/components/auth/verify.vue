@@ -9,20 +9,23 @@ const code = ref(['', '', '', '', ''])
 const inputs = ref<HTMLInputElement[]>([])
 
 // Функция обработки ввода
+const isError = ref(false) // Состояние для неверного кода
+
 const handleInput = (index: number, e: Event) => {
+    isError.value = false // Сбрасываем ошибку при вводе
     const target = e.target as HTMLInputElement
-    const value = target.value.slice(-1) // Берем только последний введенный символ
+    const value = target.value.slice(-1)
 
     if (value && /^\d+$/.test(value)) {
         code.value[index] = value
-        // Если есть следующая ячейка — прыгаем в неё
         if (index < 4) {
             inputs.value[index + 1].focus()
         }
     } else {
-        code.value[index] = '' // check 
+        code.value[index] = ''
     }
 }
+
 
 // Удаление цифры (Backspacing)
 const handleKeyDown = (index: number, e: KeyboardEvent) => {
@@ -31,10 +34,25 @@ const handleKeyDown = (index: number, e: KeyboardEvent) => {
     }
 }
 
-const handleVerify = () => {
+const handleVerify = async () => {
     const finalCode = code.value.join('')
-    console.log('Отправляем код на сервер:', finalCode)
-    // verification code check
+    if (finalCode.length < 5) return
+
+    // Имитация запроса на сервер
+    // console.log('Проверка кода:', finalCode)
+    const response = await fetch('https://my-noxio-test.free.beeceptor.com', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        code: finalCode
+      })
+    })
+
+    // Если код неверный (имитация):
+    const isCodeValid = false
+    if (!isCodeValid) {
+        isError.value = true
+    }
 }
 </script>
 
@@ -58,7 +76,8 @@ const handleVerify = () => {
                     <div v-for="(n, i) in 5" :key="i" class="form-field w-[60px] h-[72px]">
                         <input :ref="(el) => { if (el) inputs[i] = el as HTMLInputElement }" v-model="code[i]"
                             type="text" inputmode="numeric" maxlength="1" class="form-input-otp"
-                            @input="handleInput(i, $event)" @keydown="handleKeyDown(i, $event)" />
+                            :class="{ 'input-error': isError }" @input="handleInput(i, $event)"
+                            @keydown="handleKeyDown(i, $event)" />
                         <div class="input-focus-border"></div>
                     </div>
                 </div>
@@ -86,35 +105,47 @@ const handleVerify = () => {
     @apply relative flex items-center justify-center;
 }
 
-/* Стили для маленьких квадратиков кода */
 .form-input-otp {
     @apply w-full h-full text-center text-3xl font-bold bg-white border border-gray-400 
-           rounded-lg outline-none transition-colors duration-500 text-black;
+           rounded-lg outline-none transition-all duration-300 text-black;
 }
 
-/* Скрытый черный слой контура */
+/* --- СТИЛИ ОШИБКИ --- */
+
+.form-input-otp.input-error {
+    border-color: #ef4444 !important;
+    background-color: #fef2f2 !important;
+    color: #b91c1c;
+}
+
+/* Делаем накладную рамку красной при ошибке */
+.input-error + .input-focus-border {
+    border-color: #ef4444 !important;
+    opacity: 1 !important;
+    @apply scale-100;
+}
+
+/* --- СОСТОЯНИЯ ФОКУСА --- */
+
 .input-focus-border {
-    @apply absolute inset-0 rounded-lg pointer-events-none border-2 border-black opacity-0;
-    transition: opacity 0.3s ease-in-out;
+    @apply absolute inset-0 rounded-lg pointer-events-none border-2 border-black opacity-0 scale-95;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Плавное проявление при фокусе */
-.form-input-otp:focus + .input-focus-border {
-    @apply opacity-100;
+.form-input-otp:not(.input-error):focus + .input-focus-border {
+    @apply opacity-100 scale-100;
 }
 
-/* Прячем стандартный бордер при фокусе */
 .form-input-otp:focus {
     border-color: transparent;
 }
 
-/* Кнопки (привел к общему стилю с увеличением) */
+/* Кнопки */
 button {
-    @apply transition-all duration-200 hover:scale-[1.05] active:scale-[0.95];
+    @apply transition-all duration-200 hover:scale-[1.05] active:scale-[0.95] disabled:opacity-50;
 }
 
-/* Специфические стили для кнопок из твоего макета */
 .bg-\[\#D9D9D9\] {
-    @apply hover:bg-gray-300; /* чуть светлее при наведении */
+    @apply hover:bg-gray-300;
 }
 </style>

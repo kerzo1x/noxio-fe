@@ -9,18 +9,21 @@ const email = ref('')
 const password = ref('')
 const message = ref('')
 
+const isError = ref(false) // Состояние ошибки
+
 const handleRegister = async () => {
   if (!email.value || !password.value) {
     message.value = 'Please fill in all required fields.'
+    isError.value = true
     return
   }
 
   isLoading.value = true
   message.value = ''
+  isError.value = false // Сброс перед запросом
 
   try {
-    // Пример fetch-запроса
-    const response = await fetch('http://localhost:3000/auth/register', {
+    const response = await fetch('https://my-noxio-test.free.beeceptor.com', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -33,13 +36,13 @@ const handleRegister = async () => {
 
     if (response.ok) {
       message.value = 'Registration successful! Redirecting...'
-      // Используем window.location.href для перехода по полному адресу
       setTimeout(() => {
         router.push('/login')
-      }, 1500) // Задержка 1.5 сек, чтобы пользователь успел прочитать сообщение
+      }, 1500)
     } else {
       const data = await response.json()
-      message.value = data.error || 'Registration failed. Please try again.'
+      message.value = data.error || 'Registration failed.'
+      isError.value = true // Включаем красную подсветку
     }
   } catch (err) {
     message.value = 'Network error. Please check your connection.'
@@ -66,22 +69,26 @@ const handleGoogleLogin = () => {
         <form @submit.prevent="handleRegister" class="space-y-4">
           <div class="flex gap-4">
             <div class="form-field flex-1">
-              <input v-model="firstName" type="text" placeholder="First Name" class="form-input" required />
+              <input v-model="firstName" type="text" placeholder="First Name" class="form-input"
+                :class="{ 'input-error': isError }" @input="isError = false" required />
               <div class="input-focus-border"></div>
             </div>
             <div class="form-field flex-1">
-              <input v-model="lastName" type="text" placeholder="Last Name" class="form-input" required />
+              <input v-model="lastName" type="text" placeholder="Last Name" class="form-input"
+                :class="{ 'input-error': isError }" @input="isError = false" required />
               <div class="input-focus-border"></div>
             </div>
           </div>
 
           <div class="form-field">
-            <input v-model="email" type="email" placeholder="Email" class="form-input" required />
+            <input v-model="email" type="email" placeholder="Email" class="form-input"
+              :class="{ 'input-error': isError }" @input="isError = false" required />
             <div class="input-focus-border"></div>
           </div>
 
           <div class="form-field">
-            <input v-model="password" type="password" placeholder="Password" class="form-input" required />
+            <input v-model="password" type="password" placeholder="Password" class="form-input"
+              :class="{ 'input-error': isError }" @input="isError = false" required />
             <div class="input-focus-border"></div>
           </div>
 
@@ -128,32 +135,48 @@ const handleGoogleLogin = () => {
 }
 
 .form-input {
-  /* Базовая серая граница */
-  @apply w-full p-3 bg-brand-white border border-brand-gray rounded-auth outline-none 
-         transition-colors duration-500 placeholder:text-brand-gray text-brand-black;
+  @apply w-full p-3 bg-brand-white border border-brand-gray rounded-auth outline-none transition-all duration-300 placeholder:text-brand-gray text-brand-black;
 }
 
-/* Скрытый черный слой контура */
+/* Состояние ошибки */
+.form-input.input-error {
+  border-color: #ef4444 !important;
+  background-color: #fef2f2 !important;
+}
+
+.input-error::placeholder {
+  color: #f87171 !important;
+}
+
+/* Подсветка декоративного бордера при ошибке */
+.input-error+.input-focus-border {
+  border-color: #ef4444 !important;
+  opacity: 1 !important;
+}
+
+.input-error:focus+.input-focus-border {
+  border-color: #b91c1c !important;
+}
+
+/* Стандартный фокус (только если нет ошибки) */
 .input-focus-border {
   @apply absolute inset-0 rounded-auth pointer-events-none border-2 border-brand-black opacity-0;
-  /* Медленный переход прозрачности */
-  transition: opacity 0.8s ease-in-out;
+  transition: opacity 0.4s ease-in-out;
 }
 
-/* При фокусе на инпуте черный контур плавно проявляется */
-.form-input:focus + .input-focus-border {
+.form-input:not(.input-error):focus+.input-focus-border {
   @apply opacity-100;
 }
 
-/* КНОПКИ (твоя любимая версия) */
-.btn-primary {
-  @apply w-full bg-brand-black text-brand-white p-3 rounded-auth font-semibold 
-         hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] 
-         transition-all duration-200 
-         disabled:bg-brand-gray disabled:cursor-not-allowed disabled:scale-100;
+.form-input:focus {
+  border-color: transparent;
 }
 
-/* Кнопка Google */
+/* Кнопки */
+.btn-primary {
+  @apply w-full bg-brand-black text-brand-white p-3 rounded-auth font-semibold hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 disabled:bg-brand-gray disabled:cursor-not-allowed disabled:scale-100;
+}
+
 button[type="button"] {
   @apply transition-all duration-200 hover:scale-[1.02] active:scale-[0.98];
 }

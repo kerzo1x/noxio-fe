@@ -43,7 +43,6 @@ const handleLogin = async () => {
         }
     } catch (err) {
         message.value = 'Network error. Please check your connection.'
-        isError.value = true
     } finally {
         isLoading.value = false
     }
@@ -106,63 +105,62 @@ const handleGoogleLogin = () => {
 @reference "../../assets/styles/main.css";
 
 .form-field {
-  @apply relative;
+    @apply relative;
 }
 
 .form-input {
-  @apply w-full p-3 bg-brand-white border border-brand-gray rounded-auth outline-none 
-         transition-all duration-300 placeholder:text-brand-gray text-brand-black;
+    @apply w-full p-3 bg-brand-white border border-brand-gray rounded-auth outline-none transition-all duration-300 placeholder:text-brand-gray text-brand-black;
 }
 
 /* --- МАГИЯ ОШИБКИ ЗДЕСЬ --- */
 
 /* 1. Когда есть ошибка, красим сам инпут */
 .form-input.input-error {
-  border-color: #ef4444 !important; /* Красный border */
-  background-color: #fef2f2 !important; /* Нежно-розовый фон */
+    border-color: #ef4444 !important;
+    /* Красный border */
+    background-color: #fef2f2 !important;
+    /* Нежно-розовый фон */
 }
 
 /* 2. Меняем цвет плейсхолдера при ошибке */
 .input-error::placeholder {
-  color: #f87171 !important;
+    color: #f87171 !important;
 }
 
 /* 3. ОЧЕНЬ ВАЖНО: Настраиваем накладной бордер при ошибке */
 /* Если у инпута ошибка, то накладной черный бордер должен стать красным и показаться */
-.input-error + .input-focus-border {
-  border-color: #ef4444 !important;
-  opacity: 1 !important; /* Делаем его видимым сразу при ошибке */
+.input-error+.input-focus-border {
+    border-color: #ef4444 !important;
+    opacity: 1 !important;
+    /* Делаем его видимым сразу при ошибке */
 }
 
 /* 4. При фокусе на инпуте с ошибкой сохраняем красный цвет */
-.input-error:focus + .input-focus-border {
-  border-color: #b91c1c !important; /* Делаем чуть темнее при фокусе */
+.input-error:focus+.input-focus-border {
+    border-color: #b91c1c !important;
+    /* Делаем чуть темнее при фокусе */
 }
 
 /* --- ОСТАЛЬНЫЕ СТИЛИ --- */
 
 .input-focus-border {
-  @apply absolute inset-0 rounded-auth pointer-events-none border-2 border-brand-black opacity-0;
-  transition: opacity 0.4s ease-in-out;
+    @apply absolute inset-0 rounded-auth pointer-events-none border-2 border-brand-black opacity-0;
+    transition: opacity 0.4s ease-in-out;
 }
 
-.form-input:not(.input-error):focus + .input-focus-border {
-  @apply opacity-100;
+.form-input:not(.input-error):focus+.input-focus-border {
+    @apply opacity-100;
 }
 
 .form-input:focus {
-  border-color: transparent;
+    border-color: transparent;
 }
 
 .btn-primary {
-  @apply w-full bg-brand-black text-brand-white p-3 rounded-auth font-semibold 
-         hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] 
-         transition-all duration-200 
-         disabled:bg-brand-gray disabled:cursor-not-allowed;
+    @apply w-full bg-brand-black text-brand-white p-3 rounded-auth font-semibold hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 disabled:bg-brand-gray disabled:cursor-not-allowed;
 }
 
 .google-btn {
-  @apply w-full flex items-center justify-center gap-3 p-3 border border-brand-gray 
-         rounded-auth font-semibold hover:bg-surface transition-all text-brand-black;
+    @apply w-full flex items-center justify-center gap-3 p-3 border border-brand-gray rounded-auth font-semibold hover:bg-surface transition-all text-brand-black;
 }
 </style>
