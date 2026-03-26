@@ -1,13 +1,12 @@
 :root {
-    --brand-black: #000000;
-    --brand-white: #ffffff;
+    --main-black: #000000;
+    --main-white: #ffffff;
     --main-text-black: #21272A;
-    --brand-gray-dark: #D9D9D9;
+    --brand-gray-dark: #00000081;
     --brand-gray-light: #F2F4F8;
     
-    --text-link-color: #001D6C;
+    --text-link-color: #000000;
     --color-error: #ef4444;
-
 
     --radius-auth: 0.75rem; /* 12px */
 }

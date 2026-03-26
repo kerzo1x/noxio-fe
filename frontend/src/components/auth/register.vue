@@ -174,10 +174,10 @@ const handleGoogleLogin = () => {
 
 /* Кнопки */
 .btn-primary {
-  @apply w-full bg-brand-black text-brand-white p-3 rounded-auth font-semibold hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 disabled:bg-brand-gray disabled:cursor-not-allowed disabled:scale-100;
+  @apply w-full bg-brand-black text-brand-white p-3 rounded-auth font-semibold hover:opacity-90 hover:scale-[1.05] active:scale-[0.98] transition-all duration-200 disabled:bg-brand-gray disabled:cursor-not-allowed disabled:scale-100;
 }
 
 button[type="button"] {
-  @apply transition-all duration-200 hover:scale-[1.02] active:scale-[0.98];
+  @apply transition-all duration-200 hover:scale-[1.05] active:scale-[0.98];
 }
 </style>
