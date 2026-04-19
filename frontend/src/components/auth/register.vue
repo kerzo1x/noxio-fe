@@ -8,8 +8,12 @@ const lastName = ref('')
 const email = ref('')
 const password = ref('')
 const message = ref('')
+const isError = ref(false)
 
-const isError = ref(false) // Состояние ошибки
+const clearStatus = () => {
+  isError.value = false
+  message.value = ''
+}
 
 const handleRegister = async () => {
   if (!email.value || !password.value) {
@@ -20,7 +24,7 @@ const handleRegister = async () => {
 
   isLoading.value = true
   message.value = ''
-  isError.value = false // Сброс перед запросом
+  isError.value = false
 
   try {
     const response = await fetch('https://my-noxio-test.free.beeceptor.com', {
@@ -35,16 +39,17 @@ const handleRegister = async () => {
     })
 
     if (response.ok) {
+      isError.value = false
       message.value = 'Registration successful! Redirecting...'
-      setTimeout(() => {
-        router.push('/login')
-      }, 1500)
+      setTimeout(() => router.push('/login'), 1500)
     } else {
-      const data = await response.json()
+      let data: any = {}
+      try { data = await response.json() } catch (e) { }
+      isError.value = true
       message.value = data.error || 'Registration failed.'
-      isError.value = true // Включаем красную подсветку
     }
-  } catch (err) {
+  } catch {
+    isError.value = true
     message.value = 'Network error. Please check your connection.'
   } finally {
     isLoading.value = false
@@ -52,76 +57,98 @@ const handleRegister = async () => {
 }
 
 const handleGoogleLogin = () => {
-  console.log('Google Auth: Logic will be implemented here later.')
+  // TODO: implement Google OAuth
 }
+const showPassword = ref(false)
 </script>
 
 <template>
-  <div class="min-h-screen flex bg-surface font-sans text-text-main">
-    <div class="hidden lg:flex lg:w-1/2 bg-brand-gray items-center justify-center">
-      <div class="text-brand-black font-bold text-4xl">NOXIO</div>
-    </div>
+  <div class="min-h-screen flex bg-surface text-text-main">
 
-    <div class="w-full lg:w-1/2 flex items-center justify-center p-8 bg-brand-white">
-      <div class="w-full max-w-md space-y-8">
-        <h1 class="text-4xl font-bold">Sign Up</h1>
+    <!-- Left branding panel (light) -->
+    <div class="hidden lg:block lg:w-1/2 bg-surface" />
+
+    <!-- Right dark panel -->
+    <div class="w-full lg:w-1/2 flex items-center justify-center p-10 bg-panel-bg">
+      <div class="w-full max-w-md space-y-6">
+
+        <h1 class="text-4xl font-bold text-panel-text">Sign Up</h1>
 
         <form @submit.prevent="handleRegister" class="space-y-4">
+
+          <!-- First + Last name -->
           <div class="flex gap-4">
-            <div class="form-field flex-1">
-              <input v-model="firstName" type="text" placeholder="First Name" class="form-input"
-                :class="{ 'input-error': isError }" @input="isError = false" required />
-              <div class="input-focus-border"></div>
+            <div class="field flex-1">
+              <label class="field-label">First Name</label>
+              <input v-model="firstName" type="text" placeholder="Placeholder" class="field-input"
+                :class="{ 'input-error': isError }" @input="clearStatus" required />
             </div>
-            <div class="form-field flex-1">
-              <input v-model="lastName" type="text" placeholder="Last Name" class="form-input"
-                :class="{ 'input-error': isError }" @input="isError = false" required />
-              <div class="input-focus-border"></div>
+            <div class="field flex-1">
+              <label class="field-label">Last Name</label>
+              <input v-model="lastName" type="text" placeholder="Placeholder" class="field-input"
+                :class="{ 'input-error': isError }" @input="clearStatus" required />
             </div>
           </div>
 
-          <div class="form-field">
-            <input v-model="email" type="email" placeholder="Email" class="form-input"
-              :class="{ 'input-error': isError }" @input="isError = false" required />
-            <div class="input-focus-border"></div>
+          <!-- Email -->
+          <div class="field">
+            <label class="field-label">Email</label>
+            <input v-model="email" type="email" placeholder="Placeholder" class="field-input"
+              :class="{ 'input-error': isError }" @input="clearStatus" required />
           </div>
 
-          <div class="form-field">
-            <input v-model="password" type="password" placeholder="Password" class="form-input"
-              :class="{ 'input-error': isError }" @input="isError = false" required />
-            <div class="input-focus-border"></div>
+          <!-- Password -->
+          <div class="field">
+            <label class="field-label">Password</label>
+            <div class="relative">
+              <input v-model="password" :type="showPassword ? 'text' : 'password'" placeholder="Placeholder"
+                class="field-input pr-11" :class="{ 'input-error': isError }" @input="clearStatus" required />
+              <button type="button" class="eye-btn" @click="showPassword = !showPassword"
+                :aria-label="showPassword ? 'Hide password' : 'Show password'">
+                <!-- Eye open -->
+                <svg v-if="!showPassword" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+                  viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <!-- Eye closed -->
+                <svg v-else xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor" stroke-width="1.5">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
+                </svg>
+              </button>
+            </div>
           </div>
 
           <button type="submit" :disabled="isLoading" class="btn-primary">
-            <span v-if="isLoading">Processing...</span>
-            <span v-else>Sign up</span>
+            {{ isLoading ? 'Processing...' : 'Sign Up' }}
           </button>
         </form>
 
-        <div class="text-center my-4 text-sm text-brand-gray uppercase font-medium">
-          or
-        </div>
+        <div class="text-center text-sm text-panel-label uppercase tracking-wider">or</div>
 
-        <button type="button"
-          class="w-full flex items-center justify-center gap-3 p-3 border border-brand-gray rounded-auth font-semibold hover:bg-surface transition-all text-brand-black"
-          @click="handleGoogleLogin">
+        <button type="button" class="google-btn" @click="handleGoogleLogin">
           <img src="../../assets/img/google.png" class="w-5 h-5" alt="Google" />
           Continue with Google
         </button>
 
-        <div class="mt-6 text-center text-sm">
-          <span class="text-brand-gray">Already have an account? </span>
-          <router-link to="/login" class="text-brand-black font-semibold hover:underline transition-all">
+        <p class="text-center text-sm">
+          <span class="text-panel-label">Already have an account? </span>
+          <router-link to="/login" class="text-panel-text font-semibold hover:underline transition-all">
             Log in
           </router-link>
+        </p>
+
+        <!-- Status message -->
+        <div class="h-6 flex items-center justify-center mt-2">
+          <p v-show="message" class="text-sm font-medium transition-opacity duration-300"
+            :class="isError ? 'text-error' : 'text-green-400'">
+            {{ message }}
+          </p>
         </div>
 
-
-
-        <p v-if="message"
-          :class="['text-center text-sm font-medium', message.includes('successful') ? 'text-green-600' : 'text-error']">
-          {{ message }}
-        </p>
       </div>
     </div>
   </div>
@@ -130,54 +157,37 @@ const handleGoogleLogin = () => {
 <style scoped>
 @reference "../../assets/styles/main.css";
 
-.form-field {
-  @apply relative;
+.field {
+  @apply flex flex-col gap-1.5;
 }
 
-.form-input {
-  @apply w-full p-3 bg-brand-white border border-brand-gray rounded-auth outline-none transition-all duration-300 placeholder:text-brand-gray text-brand-black;
+.field-label {
+  @apply text-sm font-medium text-panel-label;
 }
 
-/* Состояние ошибки */
-.form-input.input-error {
-  border-color: #ef4444 !important;
-  background-color: #fef2f2 !important;
+.field-input {
+  @apply w-full px-4 py-3 rounded-auth outline-none border-none bg-panel-input-bg text-panel-text placeholder:text-panel-placeholder transition-all duration-200;
 }
 
-.input-error::placeholder {
-  color: #f87171 !important;
+.field-input:focus {
+  @apply ring-1 ring-panel-text/30;
 }
 
-/* Подсветка декоративного бордера при ошибке */
-.input-error+.input-focus-border {
-  border-color: #ef4444 !important;
-  opacity: 1 !important;
+.field-input.input-error {
+  @apply ring-2 ring-error;
 }
 
-.input-error:focus+.input-focus-border {
-  border-color: #b91c1c !important;
-}
-
-/* Стандартный фокус (только если нет ошибки) */
-.input-focus-border {
-  @apply absolute inset-0 rounded-auth pointer-events-none border-2 border-brand-black opacity-0;
-  transition: opacity 0.4s ease-in-out;
-}
-
-.form-input:not(.input-error):focus+.input-focus-border {
-  @apply opacity-100;
-}
-
-.form-input:focus {
-  border-color: transparent;
-}
-
-/* Кнопки */
 .btn-primary {
-  @apply w-full bg-brand-black text-brand-white p-3 rounded-auth font-semibold hover:opacity-90 hover:scale-[1.05] active:scale-[0.98] transition-all duration-200 disabled:bg-brand-gray disabled:cursor-not-allowed disabled:scale-100;
+  @apply w-full bg-brand-white text-brand-black px-4 py-3 rounded-auth font-semibold hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed;
 }
 
-button[type="button"] {
-  @apply transition-all duration-200 hover:scale-[1.05] active:scale-[0.98];
+.google-btn {
+  @apply w-full flex items-center justify-center gap-3 px-4 py-3 rounded-auth font-semibold text-panel-text border border-panel-input-border hover:bg-white/5 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200;
+}
+
+.eye-btn {
+  @apply absolute right-3 top-1/2 -translate-y-1/2
+         text-panel-placeholder hover:text-panel-label
+         transition-colors duration-200;
 }
 </style>
