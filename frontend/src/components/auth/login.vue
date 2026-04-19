@@ -12,13 +12,13 @@ const isError = ref(false)
 const handleLogin = async () => {
     if (!email.value || !password.value) {
         message.value = 'Please enter your email and password.'
-        isError.value = true
+        isError.value = true // Здесь должен быть true
         return
     }
 
     isLoading.value = true
     message.value = ''
-    isError.value = false
+    isError.value = false // Сбрасываем перед запросом
 
     try {
         const response = await fetch('https://my-noxio-test.free.beeceptor.com', {
@@ -27,17 +27,21 @@ const handleLogin = async () => {
             body: JSON.stringify({ email: email.value, password: password.value })
         })
 
-        const data = await response.json()
+        // Beeceptor иногда возвращает ошибку не в JSON, поэтому страхуемся
+        let data: any = {}
+        try { data = await response.json() } catch (e) { }
 
         if (response.ok) {
+            isError.value = false // Успех — зеленый
             message.value = 'Login successful! Redirecting...'
+            setTimeout(() => router.push('/dashboard'), 1500)
         } else {
+            isError.value = true // Ошибка сервера — красный
             message.value = data.error || 'Login failed. Please try again.'
-            isError.value = true
         }
     } catch {
+        isError.value = true // Ошибка сети — красный
         message.value = 'Network error. Please check your connection.'
-        isError.value = true
     } finally {
         isLoading.value = false
     }
@@ -70,7 +74,7 @@ const handleForgotPassword = () => {
                     <div class="field">
                         <label class="field-label">Email</label>
                         <input v-model="email" type="email" placeholder="Placeholder" class="field-input"
-                            :class="{ 'input-error': isError }" @input="isError = false" required />
+                            :class="{ 'input-error': isError }" @input="isError = false; message = ''"/>
                     </div>
 
                     <!-- Password -->
@@ -79,7 +83,7 @@ const handleForgotPassword = () => {
                         <div class="relative">
                             <input v-model="password" :type="showPassword ? 'text' : 'password'"
                                 placeholder="Placeholder" class="field-input pr-11" :class="{ 'input-error': isError }"
-                                @input="isError = false" required />
+                                @input="isError = false; message = ''" />
                             <button type="button" class="eye-btn" @click="showPassword = !showPassword"
                                 :aria-label="showPassword ? 'Hide password' : 'Show password'">
                                 <!-- Eye open -->
@@ -127,12 +131,15 @@ const handleForgotPassword = () => {
                 </p>
 
                 <!-- Status message -->
-                <div class="min-h-[24px] flex items-center justify-center">
-                    <p v-show="message" class="text-sm font-medium transition-opacity duration-300"
-                        :class="isError ? 'text-error' : 'text-green-400'">
-                        {{ message }}
-                    </p>
-                </div>
+                <div class="h-6 flex items-center justify-center mt-2">
+    <p
+        v-show="message"
+        class="text-sm font-medium transition-opacity duration-300"
+        :class="isError ? 'text-error' : 'text-green-400'"
+    >
+        {{ message }}
+    </p>
+</div>
 
             </div>
         </div>
@@ -171,9 +178,9 @@ const handleForgotPassword = () => {
 }
 
 /* Если в состоянии ошибки нажать фокус — делаем кольцо чуть ярче */
-.field-input.input-error:focus {
+/* .field-input.input-error:focus {
     @apply ring-error/80;
-}
+} */
 
 /* ─── Eye button ─── */
 .eye-btn {
