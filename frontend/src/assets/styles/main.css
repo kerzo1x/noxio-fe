@@ -1,9 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100..900&display=swap');
 @import "tailwindcss";
 @import "./variables.css";
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100..900&display=swap');
-
-
-
 
 @theme {
     --color-brand-black: var(--main-black);
@@ -14,6 +11,12 @@
     --color-error: var(--color-error);
     --color-surface: var(--brand-gray-light);
     --font-sans: "Roboto", sans-serif;
-
     --radius-auth: var(--radius-auth);
+
+    --color-panel-bg: var(--panel-bg);
+    --color-panel-text: var(--panel-text);
+    --color-panel-input-bg: var(--panel-input-bg);
+    --color-panel-input-border: var(--panel-input-border);
+    --color-panel-placeholder: var(--panel-input-placeholder);
+    --color-panel-label: var(--panel-label);
 }

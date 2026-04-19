@@ -5,6 +5,7 @@ import router from '../../router'
 const isLoading = ref(false)
 const email = ref('')
 const password = ref('')
+const showPassword = ref(false)
 const message = ref('')
 const isError = ref(false)
 
@@ -45,76 +46,93 @@ const handleLogin = async () => {
 const handleGoogleLogin = () => {
     // TODO: implement Google OAuth
 }
+
+const handleForgotPassword = () => {
+    // TODO: implement forgot password
+}
 </script>
 
 <template>
     <div class="min-h-screen flex bg-surface text-text-main">
 
-        <!-- Left branding panel -->
-        <div class="hidden lg:flex lg:w-1/2 bg-brand-panel items-center justify-center">
-            <div class="text-brand-white font-bold text-4xl tracking-widest">NOXIO</div>
-        </div>
+        <!-- Left branding panel (light) -->
+        <div class="hidden lg:block lg:w-1/2 bg-surface" />
 
-        <!-- Right form panel -->
-        <div class="w-full lg:w-1/2 flex items-center justify-center p-8 bg-brand-white">
+        <!-- Right dark panel -->
+        <div class="w-full lg:w-1/2 flex items-center justify-center p-10 bg-panel-bg">
             <div class="w-full max-w-md space-y-6">
 
-                <h1 class="text-4xl font-bold text-brand-black">Log In</h1>
+                <h1 class="text-4xl font-bold text-panel-text">Log In</h1>
 
                 <form @submit.prevent="handleLogin" class="space-y-4">
-                    <div class="form-field">
-                        <input
-                            v-model="email"
-                            type="email"
-                            placeholder="Email"
-                            class="form-input"
-                            :class="{ 'input-error': isError }"
-                            @input="isError = false"
-                            required
-                        />
-                        <div class="input-focus-border"></div>
+
+                    <!-- Email -->
+                    <div class="field">
+                        <label class="field-label">Email</label>
+                        <input v-model="email" type="email" placeholder="Placeholder" class="field-input"
+                            :class="{ 'input-error': isError }" @input="isError = false" required />
                     </div>
 
-                    <div class="form-field">
-                        <input
-                            v-model="password"
-                            type="password"
-                            placeholder="Password"
-                            class="form-input"
-                            :class="{ 'input-error': isError }"
-                            @input="isError = false"
-                            required
-                        />
-                        <div class="input-focus-border"></div>
+                    <!-- Password -->
+                    <div class="field">
+                        <label class="field-label">Password</label>
+                        <div class="relative">
+                            <input v-model="password" :type="showPassword ? 'text' : 'password'"
+                                placeholder="Placeholder" class="field-input pr-11" :class="{ 'input-error': isError }"
+                                @input="isError = false" required />
+                            <button type="button" class="eye-btn" @click="showPassword = !showPassword"
+                                :aria-label="showPassword ? 'Hide password' : 'Show password'">
+                                <!-- Eye open -->
+                                <svg v-if="!showPassword" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                                <!-- Eye closed -->
+                                <svg v-else xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Forgot password -->
+                    <div class="flex justify-end">
+                        <button type="button" class="forgot-link" @click="handleForgotPassword">
+                            Forgot Password?
+                        </button>
                     </div>
 
                     <button type="submit" :disabled="isLoading" class="btn-primary">
-                        {{ isLoading ? 'Signing in...' : 'Sign in' }}
+                        {{ isLoading ? 'Signing in...' : 'Log In' }}
                     </button>
                 </form>
 
-                <div class="text-center text-sm text-brand-gray uppercase font-medium tracking-wider">or</div>
+                <div class="text-center text-sm text-panel-label uppercase tracking-wider">or</div>
 
                 <button type="button" class="google-btn" @click="handleGoogleLogin">
                     <img src="../../assets/img/google.png" class="w-5 h-5" alt="Google" />
-                    Continue with Google
+                    Log in with Google
                 </button>
 
                 <p class="text-center text-sm">
-                    <span class="text-brand-gray">Don't have an account? </span>
-                    <router-link to="/register" class="text-brand-black font-semibold hover:underline transition-all">
+                    <span class="text-panel-label">Don't have an account? </span>
+                    <router-link to="/register" class="text-panel-text font-semibold hover:underline transition-all">
                         Sign up
                     </router-link>
                 </p>
 
                 <!-- Status message -->
-                <p
-                    v-if="message"
-                    class="text-center text-sm font-medium"
-                    :class="isError ? 'text-error' : 'text-success'"
-                >
-                    {{ message }}
-                </p>
+                <div class="min-h-[24px] flex items-center justify-center">
+                    <p v-show="message" class="text-sm font-medium transition-opacity duration-300"
+                        :class="isError ? 'text-error' : 'text-green-400'">
+                        {{ message }}
+                    </p>
+                </div>
 
             </div>
         </div>
@@ -124,64 +142,56 @@ const handleGoogleLogin = () => {
 <style scoped>
 @reference "../../assets/styles/main.css";
 
-/* ─── Input field wrapper ─── */
-.form-field {
-    @apply relative;
+/* ─── Field ─── */
+.field {
+    @apply flex flex-col gap-1.5;
 }
 
-.form-input {
-    @apply w-full p-3 bg-brand-white border border-brand-gray rounded-auth outline-none
-           transition-all duration-300 placeholder:text-brand-gray text-brand-black;
+.field-label {
+    @apply text-sm font-medium text-panel-label;
 }
 
-/* Focus ring overlay — visible only on focus (non-error state) */
-.input-focus-border {
-    @apply absolute inset-0 rounded-auth pointer-events-none border-2 border-brand-black opacity-0;
-    transition: opacity 0.3s ease-in-out;
+/* ─── Field Input ─── */
+.field-input {
+    /* Убираем все рамки и обводки */
+    @apply w-full px-4 py-3 rounded-auth outline-none border-none
+           bg-panel-input-bg text-panel-text 
+           placeholder:text-panel-placeholder
+           transition-all duration-200;
 }
 
-.form-input:not(.input-error):focus + .input-focus-border {
-    @apply opacity-100;
+/* Вместо border используем ring для фокуса (не сдвигает пиксели) */
+.field-input:focus {
+    @apply ring-1 ring-panel-text/30;
 }
 
-/* Hide native focus outline when the overlay takes over */
-.form-input:focus {
-    border-color: transparent;
+/* Состояние ошибки: используем ring вместо border, чтобы не нужен был !important */
+.field-input.input-error {
+    @apply ring-2 ring-error;
 }
 
-/* ─── Error state ─── */
-.form-input.input-error {
-    border-color: var(--color-error) !important;
-    background-color: #fff5f5 !important;
+/* Если в состоянии ошибки нажать фокус — делаем кольцо чуть ярче */
+.field-input.input-error:focus {
+    @apply ring-error/80;
 }
 
-.input-error::placeholder {
-    color: #fc8181 !important;
+/* ─── Eye button ─── */
+.eye-btn {
+    @apply absolute right-3 top-1/2 -translate-y-1/2 text-panel-placeholder hover:text-panel-label transition-colors duration-200;
 }
 
-/* Show error-colored ring immediately on error */
-.input-error + .input-focus-border {
-    border-color: var(--color-error) !important;
-    opacity: 1 !important;
+/* ─── Forgot ─── */
+.forgot-link {
+    @apply text-sm text-panel-label hover:text-panel-text transition-colors duration-200;
 }
 
-/* Darken the ring on focus when in error state */
-.input-error:focus + .input-focus-border {
-    border-color: #c53030 !important;
-}
-
-/* ─── Buttons ─── */
+/* ─── Primary button ─── */
 .btn-primary {
-    @apply w-full bg-brand-black text-brand-white p-3 rounded-auth font-semibold
-           hover:opacity-90 hover:scale-[1.05] active:scale-[0.98]
-           transition-all duration-200
-           disabled:bg-brand-gray disabled:cursor-not-allowed;
+    @apply w-full bg-brand-white text-brand-black px-4 py-3 rounded-auth font-semibold hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed;
 }
 
+/* ─── Google button ─── */
 .google-btn {
-    @apply w-full flex items-center justify-center gap-3 p-3
-            hover:opacity-90 hover:scale-[1.05] active:scale-[0.98]
-           border border-brand-gray rounded-auth font-semibold
-           hover:bg-surface transition-all text-brand-black;
+    @apply w-full flex items-center justify-center gap-3 px-4 py-3 rounded-auth font-semibold text-panel-text border border-panel-input-border hover:bg-white/5 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200;
 }
 </style>
