@@ -1,28 +1,48 @@
-import { createRouter, createWebHistory } from 'vue-router'
-// Проверь, чтобы пути к файлам были правильными
-import register from '../components/auth/register.vue'
-import login from '../components/auth/login.vue'
-import verify from '../components/auth/verify.vue'
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 
-const routes = [
+const routes: Array<RouteRecordRaw> = [
+    // Группа маршрутов авторизации
     {
-        path: '/register',
-        name: 'Register',
-        component: register
+        path: '/auth',
+        children: [
+            {
+                path: 'register',
+                name: 'Register',
+                component: () => import('../components/auth/register.vue')
+            },
+            {
+                path: 'login',
+                name: 'Login',
+                component: () => import('../components/auth/login.vue')
+            },
+            {
+                path: 'verify',
+                name: 'Verify',
+                component: () => import('../components/auth/verify.vue')
+            },
+            {
+                path: 'forgot-password',
+                name: 'ForgotPassword',
+                component: () => import('../components/auth/forgotPassword.vue')
+            },
+            {
+                path: 'reset-password',
+                name: 'ResetPassword',
+                component: () => import('../components/auth/resetPassword.vue') 
+            }
+        ]
     },
-    {
-        path: '/login',
-        name: 'Login',
-        component: login
-    },
-    {
-        path: '/verify',
-        name: 'Verify',
-        component: verify
-    },
+
+    // main page
     {
         path: '/',
-        redirect: '/login' // По умолчанию кидаем на логин
+        redirect: '/auth/login'
+    },
+
+    // if user write wrong url
+    {
+        path: '/:pathMatch(.*)*',
+        redirect: '/auth/login'
     }
 ]
 
