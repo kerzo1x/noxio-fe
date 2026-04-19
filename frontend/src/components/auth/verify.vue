@@ -52,12 +52,9 @@ const handleVerify = async () => {
 </script>
 
 <template>
-    <div class="min-h-screen flex bg-surface text-text-main">
-
-        <!-- Left branding panel (light) -->
+    <div class="min-h-screen flex bg-surface text-text-main font-sans">
         <div class="hidden lg:block lg:w-1/2 bg-surface" />
 
-        <!-- Right dark panel -->
         <div class="w-full lg:w-1/2 flex items-center justify-center p-10 bg-panel-bg">
             <div class="w-full max-w-sm text-center space-y-8">
 
@@ -68,31 +65,37 @@ const handleVerify = async () => {
                     </p>
                 </div>
 
-                <!-- OTP inputs -->
-                <div class="flex justify-between gap-3">
-                    <input
-                        v-for="(_, i) in 5"
-                        :key="i"
-                        :ref="(el) => { if (el) inputs[i] = el as HTMLInputElement }"
-                        v-model="code[i]"
-                        type="text"
-                        inputmode="text"
-                        maxlength="1"
-                        class="otp-input"
-                        :class="{ 'input-error': isError }"
-                        @input="handleInput(i, $event)"
-                        @keydown="handleKeyDown(i, $event)"
-                    />
-                </div>
+                <form @submit.prevent="handleVerify" class="space-y-8">
+                    <div class="flex justify-between gap-3">
+                        <input
+                            v-for="(_, i) in 5"
+                            :key="i"
+                            :ref="(el) => { if (el) inputs[i] = el as HTMLInputElement }"
+                            v-model="code[i]"
+                            type="text"
+                            inputmode="text"
+                            maxlength="1"
+                            class="otp-input"
+                            :class="{ 'input-error': isError }"
+                            @input="handleInput(i, $event)"
+                            @keydown="handleKeyDown(i, $event)"
+                        />
+                    </div>
 
-                <!-- Actions -->
-                <div class="flex gap-3">
-                    <button type="button" class="btn-secondary w-20" @click="router.back()">
-                        Back
-                    </button>
-                    <button type="button" class="btn-primary flex-1" @click="handleVerify">
-                        Verify
-                    </button>
+                    <div class="flex gap-3">
+                        <button type="button" class="btn-secondary w-20" @click="router.back()">
+                            Back
+                        </button>
+                        <button type="submit" class="btn-primary flex-1">
+                            Verify
+                        </button>
+                    </div>
+                </form>
+
+                <div class="h-6 flex items-center justify-center">
+                    <p v-show="isError" class="text-error text-sm font-medium">
+                        Invalid verification code.
+                    </p>
                 </div>
 
             </div>
