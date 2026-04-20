@@ -12,13 +12,13 @@ const isError = ref(false)
 const handleLogin = async () => {
     if (!email.value || !password.value) {
         message.value = 'Please enter your email and password.'
-        isError.value = true // Здесь должен быть true
+        isError.value = true
         return
     }
 
     isLoading.value = true
     message.value = ''
-    isError.value = false // Сбрасываем перед запросом
+    isError.value = false 
 
     try {
         const response = await fetch('https://my-noxio-test.free.beeceptor.com', {
@@ -27,20 +27,19 @@ const handleLogin = async () => {
             body: JSON.stringify({ email: email.value, password: password.value })
         })
 
-        // Beeceptor иногда возвращает ошибку не в JSON, поэтому страхуемся
         let data: any = {}
         try { data = await response.json() } catch (e) { }
 
         if (response.ok) {
-            isError.value = false // Успех — зеленый
+            isError.value = false 
             message.value = 'Login successful! Redirecting...'
             setTimeout(() => router.push('/dashboard'), 1500)
         } else {
-            isError.value = true // Ошибка сервера — красный
+            isError.value = true 
             message.value = data.error || 'Login failed. Please try again.'
         }
     } catch {
-        isError.value = true // Ошибка сети — красный
+        isError.value = true 
         message.value = 'Network error. Please check your connection.'
     } finally {
         isLoading.value = false
@@ -160,44 +159,32 @@ const handleForgotPassword = () => {
 
 /* ─── Field Input ─── */
 .field-input {
-    /* Убираем все рамки и обводки */
     @apply w-full px-4 py-3 rounded-auth outline-none border-none
            bg-panel-input-bg text-panel-text 
            placeholder:text-panel-placeholder
            transition-all duration-200;
 }
 
-/* Вместо border используем ring для фокуса (не сдвигает пиксели) */
 .field-input:focus {
     @apply ring-1 ring-panel-text/30;
 }
 
-/* Состояние ошибки: используем ring вместо border, чтобы не нужен был !important */
 .field-input.input-error {
     @apply ring-2 ring-error;
 }
 
-/* Если в состоянии ошибки нажать фокус — делаем кольцо чуть ярче */
-/* .field-input.input-error:focus {
-    @apply ring-error/80;
-} */
-
-/* ─── Eye button ─── */
 .eye-btn {
     @apply absolute right-3 top-1/2 -translate-y-1/2 text-panel-placeholder hover:text-panel-label transition-colors duration-200;
 }
 
-/* ─── Forgot ─── */
 .forgot-link {
     @apply text-sm text-panel-label hover:text-panel-text transition-colors duration-200;
 }
 
-/* ─── Primary button ─── */
 .btn-primary {
     @apply w-full bg-brand-white text-brand-black px-4 py-3 rounded-auth font-semibold hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed;
 }
 
-/* ─── Google button ─── */
 .google-btn {
     @apply w-full flex items-center justify-center gap-3 px-4 py-3 rounded-auth font-semibold text-panel-text border border-panel-input-border hover:bg-white/5 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200;
 }

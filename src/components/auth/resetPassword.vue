@@ -10,7 +10,6 @@ const errorMessage = ref('')
 const isLoading = ref(false)
 
 const handleResetPassword = async () => {
-  // Базовая проверка совпадения
   if (password.value !== confirmPassword.value) {
     errorMessage.value = 'Passwords do not match'
     isError.value = true
@@ -28,7 +27,6 @@ const handleResetPassword = async () => {
     })
 
     if (response.ok) {
-      // После успеха обычно кидаем на логин
       router.push({ name: 'Login' })
     } else {
       errorMessage.value = 'Failed to reset password. Try again.'

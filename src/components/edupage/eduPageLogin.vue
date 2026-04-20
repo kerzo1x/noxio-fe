@@ -51,7 +51,7 @@ const handleLogin = async () => {
     <div class="min-h-screen flex items-center justify-center p-6 bg-brand-black font-sans text-center">
         <div class="w-full max-w-sm flex flex-col items-center">
             
-            <div class="space-y-4 mb-10 max-w-[280px]">
+            <div class="space-y-4 mb-10 max-w-70">
                 <h1 class="text-4xl font-bold text-brand-white leading-tight">
                     Sign in to EduPage
                 </h1>
@@ -134,15 +134,12 @@ const handleLogin = async () => {
     @apply absolute right-3 top-1/2 -translate-y-1/2 text-panel-placeholder hover:text-panel-label transition-colors;
 }
 
-/* Внутри <style scoped> */
-
 .btn-primary {
     @apply w-full bg-brand-white text-brand-black py-4 rounded-auth font-bold text-lg
            hover:bg-brand-white/90 active:scale-[0.98] transition-all duration-200 
            disabled:opacity-40 disabled:cursor-not-allowed;
 }
 
-/* Если используешь стандартный белый цвет Tailwind */
 .btn-white-fix {
     @apply bg-white text-black hover:bg-white/90;
 }

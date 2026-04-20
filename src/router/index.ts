@@ -2,14 +2,14 @@ import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 
 const routes: Array<RouteRecordRaw> = [
-    // Группа маршрутов авторизации
     {
+        // Parent route for all authentication-related pages
         path: '/auth',
         children: [
             {
                 path: 'register',
                 name: 'Register',
-                component: () => import('../components/auth/register.vue')
+                component: () => import('../components/auth/register.vue') // Lazy loaded
             },
             {
                 path: 'login',
@@ -24,12 +24,12 @@ const routes: Array<RouteRecordRaw> = [
             {
                 path: 'forgot-password',
                 name: 'ForgotPassword',
-                component: () => import('../components/auth/forgotPassword.vue') // Добавь этот файл позже
+                component: () => import('../components/auth/forgotPassword.vue') 
             },
             {
                 path: 'reset-password',
                 name: 'ResetPassword',
-                component: () => import('../components/auth/resetPassword.vue') // И этот
+                component: () => import('../components/auth/resetPassword.vue') 
             },
             {
                 path: '/auth/edupage',
@@ -41,31 +41,20 @@ const routes: Array<RouteRecordRaw> = [
                 name: 'EduPageLogin',
                 component: () => import('../components/edupage/eduPageLogin.vue')
             },
-            // ... твои остальные маршруты /auth/...
-
-            // Главная (заглушка)
             {
                 path: '/home',
                 name: 'Home',
                 component: () => import('../components/Home.vue')
-            },
-
-            // Теперь при заходе на сайт кидаем на выбор EduPage
-            {
-                path: '/',
-                redirect: '/auth/edupage'
-            },
+            }
         ]
     },
-
-    // Главная страница
     {
+        // Redirect empty root path to the login page
         path: '/',
         redirect: '/auth/login'
     },
-
-    // 404 - на случай, если юзер забрел не туда
     {
+        // Catch-all route: redirects any undefined URL to the login page (404 handling)
         path: '/:pathMatch(.*)*',
         redirect: '/auth/login'
     }

@@ -21,7 +21,7 @@ const handleSendCode = async () => {
     })
 
     if (response.ok) {
-      // Передаем почту скрыто через state
+      // state for taking email on next 
       router.push({ 
         name: 'Verify', 
         state: { email: email.value } 
