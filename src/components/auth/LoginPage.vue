@@ -2,14 +2,20 @@
 import { ref } from 'vue'
 import router from '../../router'
 
-const isLoading = ref(false)
+// --- State Management ---
+const isLoading = ref(false)     // Manages button loading states and prevents duplicate requests
 const email = ref('')
 const password = ref('')
-const showPassword = ref(false)
-const message = ref('')
-const isError = ref(false)
+const showPassword = ref(false)  // Toggles password visibility (text vs password)
+const message = ref('')          // Stores success or error text for user feedback
+const isError = ref(false)       // Flag to switch between error (red) and success (green) styles
 
+/**
+ * Handle form submission
+ * Validates inputs, calls the login API, and handles the response.
+ */
 const handleLogin = async () => {
+    // Prevent submission if fields are empty
     if (!email.value || !password.value) {
         message.value = 'Please enter your email and password.'
         isError.value = true
@@ -18,9 +24,10 @@ const handleLogin = async () => {
 
     isLoading.value = true
     message.value = ''
-    isError.value = false 
+    isError.value = false
 
     try {
+        // Send POST request to the authentication endpoint
         const response = await fetch('https://my-noxio-test.free.beeceptor.com', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -31,17 +38,22 @@ const handleLogin = async () => {
         try { data = await response.json() } catch (e) { }
 
         if (response.ok) {
-            isError.value = false 
+            // Successful login logic
+            isError.value = false
             message.value = 'Login successful! Redirecting...'
+            // Redirect to dashboard after a short delay for user to read the message
             setTimeout(() => router.push('/dashboard'), 1500)
         } else {
-            isError.value = true 
+            // Server returned an error (e.g., 401 Unauthorized)
+            isError.value = true
             message.value = data.error || 'Login failed. Please try again.'
         }
     } catch {
-        isError.value = true 
+        // Handle network errors or server downtime
+        isError.value = true
         message.value = 'Network error. Please check your connection.'
     } finally {
+        // Always reset loading state to re-enable the button
         isLoading.value = false
     }
 }
@@ -58,10 +70,8 @@ const handleForgotPassword = () => {
 <template>
     <div class="min-h-screen flex bg-surface text-text-main">
 
-        <!-- Left branding panel (light) -->
         <div class="hidden lg:block lg:w-1/2 bg-surface" />
 
-        <!-- Right dark panel -->
         <div class="w-full lg:w-1/2 flex items-center justify-center p-10 bg-panel-bg">
             <div class="w-full max-w-md space-y-6">
 
@@ -69,23 +79,21 @@ const handleForgotPassword = () => {
 
                 <form @submit.prevent="handleLogin" class="space-y-4">
 
-                    <!-- Email -->
                     <div class="field">
                         <label class="field-label">Email</label>
                         <input v-model="email" type="email" placeholder="Placeholder" class="field-input"
-                            :class="{ 'input-error': isError }" @input="isError = false; message = ''"/>
+                            :class="{ 'input-error': isError }" @input="isError = false; message = ''" />
                     </div>
 
-                    <!-- Password -->
                     <div class="field">
                         <label class="field-label">Password</label>
                         <div class="relative">
                             <input v-model="password" :type="showPassword ? 'text' : 'password'"
                                 placeholder="Placeholder" class="field-input pr-11" :class="{ 'input-error': isError }"
                                 @input="isError = false; message = ''" />
+
                             <button type="button" class="eye-btn" @click="showPassword = !showPassword"
                                 :aria-label="showPassword ? 'Hide password' : 'Show password'">
-                                <!-- Eye open -->
                                 <svg v-if="!showPassword" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -93,7 +101,6 @@ const handleForgotPassword = () => {
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
-                                <!-- Eye closed -->
                                 <svg v-else xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -103,7 +110,6 @@ const handleForgotPassword = () => {
                         </div>
                     </div>
 
-                    <!-- Forgot password -->
                     <div class="flex justify-end">
                         <button type="button" class="forgot-link" @click="handleForgotPassword">
                             Forgot Password?
@@ -129,16 +135,12 @@ const handleForgotPassword = () => {
                     </router-link>
                 </p>
 
-                <!-- Status message -->
                 <div class="h-6 flex items-center justify-center mt-2">
-    <p
-        v-show="message"
-        class="text-sm font-medium transition-opacity duration-300"
-        :class="isError ? 'text-error' : 'text-green-400'"
-    >
-        {{ message }}
-    </p>
-</div>
+                    <p v-show="message" class="text-sm font-medium transition-opacity duration-300"
+                        :class="isError ? 'text-error' : 'text-green-400'">
+                        {{ message }}
+                    </p>
+                </div>
 
             </div>
         </div>
@@ -148,7 +150,7 @@ const handleForgotPassword = () => {
 <style scoped>
 @reference "../../assets/styles/main.css";
 
-/* ─── Field ─── */
+/* --- Component Structural Styles --- */
 .field {
     @apply flex flex-col gap-1.5;
 }
@@ -157,18 +159,16 @@ const handleForgotPassword = () => {
     @apply text-sm font-medium text-panel-label;
 }
 
-/* ─── Field Input ─── */
+/* --- Input Interaction Styles --- */
 .field-input {
-    @apply w-full px-4 py-3 rounded-auth outline-none border-none
-           bg-panel-input-bg text-panel-text 
-           placeholder:text-panel-placeholder
-           transition-all duration-200;
+    @apply w-full px-4 py-3 rounded-auth outline-none border-none bg-panel-input-bg text-panel-text placeholder:text-panel-placeholder transition-all duration-200;
 }
 
 .field-input:focus {
     @apply ring-1 ring-panel-text/30;
 }
 
+/* Red ring applied when 'isError' is true */
 .field-input.input-error {
     @apply ring-2 ring-error;
 }
@@ -181,6 +181,7 @@ const handleForgotPassword = () => {
     @apply text-sm text-panel-label hover:text-panel-text transition-colors duration-200;
 }
 
+/* --- Button Styles --- */
 .btn-primary {
     @apply w-full bg-brand-white text-brand-black px-4 py-3 rounded-auth font-semibold hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed;
 }

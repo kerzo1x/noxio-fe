@@ -67,19 +67,10 @@ const handleVerify = async () => {
 
                 <form @submit.prevent="handleVerify" class="space-y-8">
                     <div class="flex justify-between gap-3">
-                        <input
-                            v-for="(_, i) in 5"
-                            :key="i"
-                            :ref="(el) => { if (el) inputs[i] = el as HTMLInputElement }"
-                            v-model="code[i]"
-                            type="text"
-                            inputmode="text"
-                            maxlength="1"
-                            class="otp-input"
-                            :class="{ 'input-error': isError }"
-                            @input="handleInput(i, $event)"
-                            @keydown="handleKeyDown(i, $event)"
-                        />
+                        <input v-for="(_, i) in 5" :key="i"
+                            :ref="(el) => { if (el) inputs[i] = el as HTMLInputElement }" v-model="code[i]" type="text"
+                            inputmode="text" maxlength="1" class="otp-input" :class="{ 'input-error': isError }"
+                            @input="handleInput(i, $event)" @keydown="handleKeyDown(i, $event)" />
                     </div>
 
                     <div class="flex gap-3">
@@ -107,10 +98,7 @@ const handleVerify = async () => {
 @reference "../../assets/styles/main.css";
 
 .otp-input {
-    @apply w-full aspect-square text-center text-2xl font-bold
-           rounded-auth outline-none
-           bg-panel-input-bg text-panel-text
-           transition-all duration-200;
+    @apply w-full aspect-square text-center text-2xl font-bold rounded-auth outline-none bg-panel-input-bg text-panel-text transition-all duration-200;
     text-transform: uppercase;
 }
 
@@ -123,15 +111,10 @@ const handleVerify = async () => {
 }
 
 .btn-primary {
-    @apply bg-brand-white text-brand-black py-3 rounded-auth font-semibold
-           hover:opacity-90 hover:scale-[1.02] active:scale-[0.98]
-           transition-all duration-200;
+    @apply bg-brand-white text-brand-black py-3 rounded-auth font-semibold hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200;
 }
 
 .btn-secondary {
-    @apply py-3 rounded-auth font-semibold text-panel-label
-           border border-panel-input-border
-           hover:bg-white/5 hover:text-panel-text hover:scale-[1.02] active:scale-[0.98]
-           transition-all duration-200;
+    @apply py-3 rounded-auth font-semibold text-panel-label border border-panel-input-border hover:bg-white/5 hover:text-panel-text hover:scale-[1.02] active:scale-[0.98] transition-all duration-200;
 }
 </style>

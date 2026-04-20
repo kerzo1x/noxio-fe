@@ -186,8 +186,6 @@ const showPassword = ref(false)
 }
 
 .eye-btn {
-  @apply absolute right-3 top-1/2 -translate-y-1/2
-         text-panel-placeholder hover:text-panel-label
-         transition-colors duration-200;
+  @apply absolute right-3 top-1/2 -translate-y-1/2 text-panel-placeholder hover:text-panel-label transition-colors duration-200;
 }
 </style>

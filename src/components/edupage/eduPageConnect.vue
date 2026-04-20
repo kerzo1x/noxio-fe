@@ -42,20 +42,14 @@ const handleSignIn = () => {
 @reference "../../assets/styles/main.css";
 
 .btn-primary {
-    @apply bg-brand-white text-brand-black py-3 rounded-auth font-semibold
-           hover:opacity-90 hover:scale-[1.02] active:scale-[0.98]
-           transition-all duration-200;
+    @apply bg-brand-white text-brand-black py-3 rounded-auth font-semibold hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200;
 }
 
 .btn-secondary {
-    @apply py-3 rounded-auth font-semibold text-panel-text
-           border border-panel-input-border
-           hover:bg-white/5 hover:scale-[1.02] active:scale-[0.98]
-           transition-all duration-200;
+    @apply py-3 rounded-auth font-semibold text-panel-text border border-panel-input-border hover:bg-white/5 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200;
 }
 
 .skip-link {
-    @apply text-sm text-panel-label underline underline-offset-2
-           hover:text-panel-text transition-colors duration-200;
+    @apply text-sm text-panel-label underline underline-offset-2 hover:text-panel-text transition-colors duration-200;
 }
 </style>

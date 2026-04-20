@@ -44,7 +44,7 @@ const handleResetPassword = async () => {
 <template>
   <div class="min-h-screen flex items-center justify-center p-6 bg-brand-black font-sans">
     <div class="w-full max-w-sm space-y-8">
-      
+
       <div class="space-y-2 max-w-xs mx-auto text-center">
         <h1 class="text-4xl font-bold text-brand-white">New password</h1>
         <p class="text-panel-label text-sm leading-relaxed">
@@ -56,26 +56,14 @@ const handleResetPassword = async () => {
         <div class="space-y-4">
           <div class="space-y-2">
             <label class="text-sm font-medium text-panel-label ml-1">New password</label>
-            <input
-              v-model="password"
-              type="password"
-              placeholder="Placeholder"
-              class="field-input"
-              :class="{ 'input-error': isError }"
-              required
-            />
+            <input v-model="password" type="password" placeholder="Placeholder" class="field-input"
+              :class="{ 'input-error': isError }" required />
           </div>
 
           <div class="space-y-2">
             <label class="text-sm font-medium text-panel-label ml-1">Password confirmation</label>
-            <input
-              v-model="confirmPassword"
-              type="password"
-              placeholder="Placeholder"
-              class="field-input"
-              :class="{ 'input-error': isError }"
-              required
-            />
+            <input v-model="confirmPassword" type="password" placeholder="Placeholder" class="field-input"
+              :class="{ 'input-error': isError }" required />
           </div>
         </div>
 
@@ -97,10 +85,7 @@ const handleResetPassword = async () => {
 @reference "../../assets/styles/main.css";
 
 .field-input {
-  @apply w-full px-4 py-3 rounded-auth outline-none border-none
-         bg-panel-input-bg text-panel-text 
-         placeholder:text-panel-placeholder
-         transition-all duration-200;
+  @apply w-full px-4 py-3 rounded-auth outline-none border-none bg-panel-input-bg text-panel-text placeholder:text-panel-placeholder transition-all duration-200;
 }
 
 .field-input:focus {
@@ -112,8 +97,6 @@ const handleResetPassword = async () => {
 }
 
 .btn-primary {
-  @apply bg-brand-white text-brand-black py-3 rounded-auth font-semibold
-         hover:opacity-90 hover:scale-[1.01] active:scale-[0.99]
-         transition-all duration-200 disabled:opacity-50;
+  @apply bg-brand-white text-brand-black py-3 rounded-auth font-semibold hover:opacity-90 hover:scale-[1.01] active:scale-[0.99] transition-all duration-200 disabled:opacity-50;
 }
 </style>

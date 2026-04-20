@@ -9,42 +9,42 @@ const routes: Array<RouteRecordRaw> = [
             {
                 path: 'register',
                 name: 'Register',
-                component: () => import('../components/auth/register.vue') // Lazy loaded
+                component: () => import('../components/auth/RegisterPage.vue') // Lazy loaded
             },
             {
                 path: 'login',
                 name: 'Login',
-                component: () => import('../components/auth/login.vue')
+                component: () => import('../components/auth/LoginPage.vue')
             },
             {
                 path: 'verify',
                 name: 'Verify',
-                component: () => import('../components/auth/verify.vue')
+                component: () => import('../components/auth/VerifyPassword.vue')
             },
             {
                 path: 'forgot-password',
                 name: 'ForgotPassword',
-                component: () => import('../components/auth/forgotPassword.vue') 
+                component: () => import('../components/auth/ForgotPassword.vue') 
             },
             {
                 path: 'reset-password',
                 name: 'ResetPassword',
-                component: () => import('../components/auth/resetPassword.vue') 
+                component: () => import('../components/auth/ResetPassword.vue') 
             },
             {
                 path: '/auth/edupage',
                 name: 'EduPageConnect',
-                component: () => import('../components/edupage/eduPageConnect.vue')
+                component: () => import('../components/edupage/EdupageConnect.vue')
             },
             {
                 path: '/auth/edupage/login',
                 name: 'EduPageLogin',
-                component: () => import('../components/edupage/eduPageLogin.vue')
+                component: () => import('../components/edupage/EdupageLogin.vue')
             },
             {
                 path: '/home',
                 name: 'Home',
-                component: () => import('../components/Home.vue')
+                component: () => import('../components/dashboard/HomePage.vue')
             }
         ]
     },
