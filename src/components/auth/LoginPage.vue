@@ -158,7 +158,6 @@ const handleForgotPassword = () => {
 .field-label {
     @apply text-sm font-medium text-panel-label;
 }
-//
 /* --- Input Interaction Styles --- */
 .field-input {
     @apply w-full px-4 py-3 rounded-auth outline-none border-none bg-panel-input-bg text-panel-text placeholder:text-panel-placeholder transition-all duration-200;
