@@ -128,7 +128,7 @@ const showPassword = ref(false)
         </form>
 
         <div class="text-center text-sm text-panel-label uppercase tracking-wider">or</div>
-
+//
         <button type="button" class="google-btn" @click="handleGoogleLogin">
           <img src="../../assets/img/google.png" class="w-5 h-5" alt="Google" />
           Continue with Google

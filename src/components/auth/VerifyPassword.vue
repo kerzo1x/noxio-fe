@@ -72,7 +72,7 @@ const handleVerify = async () => {
                             inputmode="text" maxlength="1" class="otp-input" :class="{ 'input-error': isError }"
                             @input="handleInput(i, $event)" @keydown="handleKeyDown(i, $event)" />
                     </div>
-
+//
                     <div class="flex gap-3">
                         <button type="button" class="btn-secondary w-20" @click="router.back()">
                             Back

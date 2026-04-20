@@ -19,7 +19,7 @@ const handleSendCode = async () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: email.value })
     })
-
+//
     if (response.ok) {
       // state for taking email on next 
       router.push({ 
