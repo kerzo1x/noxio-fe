@@ -1,5 +1,5 @@
 > ⚠️ docker compose may work but i havent cheked it
-# Questionnaire
+# Noxio(Frontend)
 
 ## Getting Started
 To get started with this template, simply paste this command into your terminal:
@@ -14,3 +14,10 @@ bun run dev
 ```
 
 Open http://localhost:3000/ with your browser to see the result.
+## Errors
+If you have this error:
+Just add this to your >Prefernces: User settins (JSON)
+```json
+    "css.lint.unknownAtRules": "ignore",
+    "scss.lint.unknownAtRules": "ignore",
+```
