@@ -15,9 +15,7 @@ bun run dev
 
 Open http://localhost:3000/ with your browser to see the result.
 ## Errors
-If you have this error:
-Just search in VSC: >Prefernces: Open User settins (JSON)
-And add this: 
+If you have this error: Unknown at rule @apply, just search in VSC: >Prefernces: Open User settins (JSON), and add this: 
 ```json
     "css.lint.unknownAtRules": "ignore",
     "scss.lint.unknownAtRules": "ignore",
