@@ -1,0 +1,24 @@
+Посмотрел все 5 файлов, логика в целом связная. Вот что нашёл:
+
+**Проблема — Login не редиректит на verify:**
+
+В `Login.vue` при успехе сразу идёт на `/dashboard`, но судя по регистрации у тебя есть 2FA. Если бэкенд возвращает `sessionToken` вместо `accessToken` — нужно редиректить на `/auth/verify`. Проверь что именно возвращает `/auth/login` при успехе.
+
+**`Cyborg Discipline` комментарий в reset-password** — это мусор, убери 😄
+
+**Мелочь — register.vue:**
+```ts
+isLoading.value = true  // ← это после успеха лишнее
+message.value = result.message || 'Verification code sent!'
+```
+Ты ставишь `isLoading = true` снова уже после запроса, это странно визуально — кнопка снова уходит в loading пока идёт редирект.
+
+**Общий flow выглядит так:**
+
+```
+Register → /auth/verify (flow: register) → /home
+ForgotPassword → /auth/verify (flow: reset) → /auth/reset-password → /auth/login
+Login → /dashboard (или /auth/verify если 2FA)
+```
+
+Это корректно. `session_token`, `user_email`, `verification_code` чистятся в нужных местах. Всё связано правильно.

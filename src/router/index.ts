@@ -9,7 +9,7 @@ const routes: Array<RouteRecordRaw> = [
             {
                 path: 'register',
                 name: 'Register',
-                component: () => import('../components/auth/RegisterPage.vue') // Lazy loaded
+                component: () => import('../components/auth/RegisterPage.vue')
             },
             {
                 path: 'login',
