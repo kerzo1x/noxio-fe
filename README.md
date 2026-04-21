@@ -1,4 +1,3 @@
-> ⚠️ docker compose may work but i havent cheked it
 # Noxio(Frontend)
 
 ## Getting Started
@@ -14,6 +13,12 @@ bun run dev
 ```
 
 Open http://localhost:3000/ with your browser to see the result.
+## Prod
+To start this app on server run:
+```
+docker compose up --build
+```
+Open http://localhost 
 ## Errors
 If you have this error: Unknown at rule @apply, just search in VSC: >Prefernces: Open User settins (JSON), and add this: 
 ```json
