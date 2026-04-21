@@ -24,12 +24,12 @@ const routes: Array<RouteRecordRaw> = [
             {
                 path: 'forgot-password',
                 name: 'ForgotPassword',
-                component: () => import('../components/auth/ForgotPassword.vue') 
+                component: () => import('../components/auth/ForgotPassword.vue')
             },
             {
                 path: 'reset-password',
                 name: 'ResetPassword',
-                component: () => import('../components/auth/ResetPassword.vue') 
+                component: () => import('../components/auth/ResetPassword.vue')
             },
             {
                 path: '/auth/edupage',
@@ -47,6 +47,11 @@ const routes: Array<RouteRecordRaw> = [
                 component: () => import('../components/dashboard/HomePage.vue')
             }
         ]
+    },
+    {
+        path: '/home',
+        name: 'Home',
+        component: () => import('../components/dashboard/HomePage.vue')
     },
     {
         // Redirect empty root path to the login page

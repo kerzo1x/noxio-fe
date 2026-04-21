@@ -10,33 +10,56 @@ const errorMessage = ref('')
 const isLoading = ref(false)
 
 const handleResetPassword = async () => {
-  if (password.value !== confirmPassword.value) {
-    errorMessage.value = 'Passwords do not match'
-    isError.value = true
-    return
-  }
 
-  isLoading.value = true
-  isError.value = false
-  try {
-    const response = await fetch('https://my-noxio-test.free.beeceptor.com', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password: password.value })
-    })
-
-    if (response.ok) {
-      router.push({ name: 'Login' })
-    } else {
-      errorMessage.value = 'Failed to reset password. Try again.'
-      isError.value = true
+    if (password.value !== confirmPassword.value) {
+        errorMessage.value = 'Passwords do not match'
+        isError.value = true
+        return
     }
-  } catch {
-    errorMessage.value = 'Network error'
-    isError.value = true
-  } finally {
-    isLoading.value = false
-  }
+
+
+    const sessionToken = localStorage.getItem('session_token')
+    const verificationCode = localStorage.getItem('verification_code')
+
+    if (!sessionToken || !verificationCode) {
+        errorMessage.value = 'Session expired. Please start over.'
+        isError.value = true
+        setTimeout(() => router.push('/auth/forgot-password'), 3000)
+        return
+    }
+
+    isLoading.value = true
+    isError.value = false
+
+    try {
+        const response = await fetch('https://hrica.skyro.dev/api/v1/auth/reset-password', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                sessionToken: sessionToken,
+                code: verificationCode,
+                newPassword: password.value 
+            })
+        })
+
+        const result = await response.json()
+
+        if (result.success) {
+            localStorage.removeItem('session_token')
+            localStorage.removeItem('verification_code')
+            localStorage.removeItem('user_email')
+
+            router.push({ name: 'Login' })
+        } else {
+            errorMessage.value = result.message || 'Failed to reset password.'
+            isError.value = true
+        }
+    } catch (error) {
+        errorMessage.value = 'Network error. Please try again later.'
+        isError.value = true
+    } finally {
+        isLoading.value = false
+    }
 }
 </script>
 

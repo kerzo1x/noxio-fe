@@ -4,12 +4,12 @@ import router from '../../router'
 import { RouterLink } from 'vue-router'
 
 
-const isLoading = ref(false)     
+const isLoading = ref(false)
 const email = ref('')
 const password = ref('')
-const showPassword = ref(false)  
-const message = ref('')         
-const isError = ref(false)       
+const showPassword = ref(false)
+const message = ref('')
+const isError = ref(false)
 
 const handleLogin = async () => {
     if (!email.value || !password.value) {
@@ -26,26 +26,26 @@ const handleLogin = async () => {
         const response = await fetch('https://hrica.skyro.dev/api/v1/auth/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                email: email.value, 
-                password: password.value 
+            body: JSON.stringify({
+                email: email.value,
+                password: password.value
             })
         })
 
         const result = await response.json()
 
         if (result.success) {
-            // 1. Проверяем, есть ли токен в ответе
+
             if (result.data && result.data.accessToken) {
-                // СОХРАНЯЕМ ТОКЕН
-                localStorage.setItem('auth_token', result.data.accessToken)
+                localStorage.setItem('access_token', result.data.accessToken)
             }
 
             isError.value = false
             message.value = result.message
-            
-            // 2. Логика редиректа
-            setTimeout(() => router.push('/dashboard'), 1500)
+
+            setTimeout(async () => {
+                await router.push('/dashboard')
+            }, 1500)
         } else {
             isError.value = true
             message.value = result.message || 'Login failed.'
@@ -108,8 +108,8 @@ const handleGoogleLogin = () => {
                     </div>
 
                     <div class="flex justify-end">
-                         <router-link to="/auth/forgot-password" class="forgot-link">
-                        Forgot Password?
+                        <router-link to="/auth/forgot-password" class="forgot-link">
+                            Forgot Password?
                         </router-link>
                     </div>
 
@@ -127,7 +127,8 @@ const handleGoogleLogin = () => {
 
                 <p class="text-center text-sm">
                     <span class="text-panel-label">Don't have an account? </span>
-                    <router-link to="/auth/register" class="text-panel-text font-semibold hover:underline transition-all">
+                    <router-link to="/auth/register"
+                        class="text-panel-text font-semibold hover:underline transition-all">
                         Sign up
                     </router-link>
                 </p>
@@ -147,7 +148,6 @@ const handleGoogleLogin = () => {
 <style scoped>
 @reference "../../assets/styles/main.css";
 
-/* --- Component Structural Styles --- */
 .field {
     @apply flex flex-col gap-1.5;
 }
@@ -155,7 +155,7 @@ const handleGoogleLogin = () => {
 .field-label {
     @apply text-sm font-medium text-panel-label;
 }
-/* --- Input Interaction Styles --- */
+
 .field-input {
     @apply w-full px-4 py-3 rounded-auth outline-none border-none bg-panel-input-bg text-panel-text placeholder:text-panel-placeholder transition-all duration-200;
 }
@@ -164,7 +164,6 @@ const handleGoogleLogin = () => {
     @apply ring-1 ring-panel-text/30;
 }
 
-/* Red ring applied when 'isError' is true */
 .field-input.input-error {
     @apply ring-2 ring-error;
 }
@@ -177,7 +176,6 @@ const handleGoogleLogin = () => {
     @apply text-sm text-panel-label hover:text-panel-text transition-colors duration-200;
 }
 
-/* --- Button Styles --- */
 .btn-primary {
     @apply w-full bg-brand-white text-brand-black px-4 py-3 rounded-auth font-semibold hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed;
 }

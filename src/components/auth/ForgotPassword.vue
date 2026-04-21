@@ -8,28 +8,39 @@ const isError = ref(false)
 const isLoading = ref(false)
 
 const handleSendCode = async () => {
-  if (!email.value) return
+  if (!email.value) {
+    isError.value = true
+    return
+  }
   
   isLoading.value = true
   isError.value = false
 
   try {
-    const response = await fetch('https://my-noxio-test.free.beeceptor.com', {
+    const response = await fetch('https://hrica.skyro.dev/api/v1/auth/forgot-password', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: email.value })
     })
-//
-    if (response.ok) {
-      // state for taking email on next 
+    
+    const result = await response.json()
+
+    if (result.success) {
+      //saving sessionToken for verify
+      if (result.data && result.data.sessionToken) {
+        localStorage.setItem('session_token', result.data.sessionToken)
+        localStorage.setItem('user_email', email.value)
+      }
+
       router.push({ 
-        name: 'Verify', 
-        state: { email: email.value } 
+        path: '/auth/verify',
+        state: { flow: 'reset' }
       })
     } else {
       isError.value = true
     }
-  } catch {
+  } catch (error) {
+    console.error('Forgot password error:', error)
     isError.value = true
   } finally {
     isLoading.value = false
@@ -79,7 +90,6 @@ const handleSendCode = async () => {
 <style scoped>
 @reference "../../assets/styles/main.css";
 
-/* Инпут в стиле макета */
 .field-input {
   @apply w-full px-4 py-3 rounded-auth outline-none border-none
          bg-panel-input-bg text-panel-text 
@@ -92,11 +102,9 @@ const handleSendCode = async () => {
 }
 
 .field-input.input-error {
-  /* Вместо border юзаем ring, чтобы не прыгало */
   @apply ring-2 ring-error;
 }
 
-/* Белая кнопка */
 .btn-primary {
   @apply bg-brand-white text-brand-black py-3 rounded-auth font-semibold
          hover:opacity-90 hover:scale-[1.01] active:scale-[0.99]
