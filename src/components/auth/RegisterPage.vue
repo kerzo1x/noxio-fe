@@ -9,6 +9,7 @@ const email = ref('')
 const password = ref('')
 const message = ref('')
 const isError = ref(false)
+const showPassword = ref(false)
 
 const clearStatus = () => {
   isError.value = false
@@ -16,9 +17,9 @@ const clearStatus = () => {
 }
 
 const handleRegister = async () => {
-  if (!email.value || !password.value) {
-    message.value = 'Please fill in all required fields.'
+  if (!email.value || !password.value || !firstName.value || !lastName.value) {
     isError.value = true
+    message.value = 'Please fill in all fields.'
     return
   }
 
@@ -27,39 +28,46 @@ const handleRegister = async () => {
   isError.value = false
 
   try {
-    const response = await fetch('https://my-noxio-test.free.beeceptor.com', {
+    const response = await fetch('https://hrica.skyro.dev/api/v1/auth/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        firstname: firstName.value,
-        lastname: lastName.value,
+        name: firstName.value,
+        surname: lastName.value,
         email: email.value,
         password: password.value
       })
     })
 
-    if (response.ok) {
-      isError.value = false
-      message.value = 'Registration successful! Redirecting...'
-      setTimeout(() => router.push('/login'), 1500)
+    const result = await response.json();
+
+    if (result.success) {
+      if (result.data && result.data.sessionToken) {
+        localStorage.setItem('session_token', result.data.sessionToken);
+      }
+
+      isError.value = false;
+      isLoading.value = true
+      message.value = result.message || 'Verification code sent!';
+
+      setTimeout(() => router.push('/auth/verify'), 1000);
     } else {
-      let data: any = {}
-      try { data = await response.json() } catch (e) { }
-      isError.value = true
-      message.value = data.error || 'Registration failed.'
+      isError.value = true;
+      message.value = result.message || result.error || 'Registration failed';
     }
-  } catch {
-    isError.value = true
-    message.value = 'Network error. Please check your connection.'
+  } catch (error) {
+    console.error('Registration error:', error);
+    isError.value = true;
+    message.value = 'System offline. Check your connection.';
   } finally {
-    isLoading.value = false
+    isLoading.value = false;
   }
 }
 
 const handleGoogleLogin = () => {
   // TODO: implement Google OAuth
 }
-const showPassword = ref(false)
+
 </script>
 
 <template>
@@ -128,7 +136,6 @@ const showPassword = ref(false)
         </form>
 
         <div class="text-center text-sm text-panel-label uppercase tracking-wider">or</div>
-//
         <button type="button" class="google-btn" @click="handleGoogleLogin">
           <img src="../../assets/img/google.png" class="w-5 h-5" alt="Google" />
           Continue with Google
@@ -136,7 +143,7 @@ const showPassword = ref(false)
 
         <p class="text-center text-sm">
           <span class="text-panel-label">Already have an account? </span>
-          <router-link to="/login" class="text-panel-text font-semibold hover:underline transition-all">
+          <router-link to="/auth/login" class="text-panel-text font-semibold hover:underline transition-all">
             Log in
           </router-link>
         </p>

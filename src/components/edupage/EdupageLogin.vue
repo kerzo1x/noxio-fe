@@ -117,7 +117,6 @@ const handleLogin = async () => {
 .field-input:focus {
     @apply ring-1 ring-panel-text/30;
 }
-//
 .field-input.input-error {
     @apply ring-2 ring-error;
 }

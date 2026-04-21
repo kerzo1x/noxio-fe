@@ -18,7 +18,6 @@ const handleResetPassword = async () => {
 
   isLoading.value = true
   isError.value = false
-//
   try {
     const response = await fetch('https://my-noxio-test.free.beeceptor.com', {
       method: 'POST',

@@ -1,21 +1,17 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import router from '../../router'
+import { RouterLink } from 'vue-router'
 
-// --- State Management ---
-const isLoading = ref(false)     // Manages button loading states and prevents duplicate requests
+
+const isLoading = ref(false)     
 const email = ref('')
 const password = ref('')
-const showPassword = ref(false)  // Toggles password visibility (text vs password)
-const message = ref('')          // Stores success or error text for user feedback
-const isError = ref(false)       // Flag to switch between error (red) and success (green) styles
+const showPassword = ref(false)  
+const message = ref('')         
+const isError = ref(false)       
 
-/**
- * Handle form submission
- * Validates inputs, calls the login API, and handles the response.
- */
 const handleLogin = async () => {
-    // Prevent submission if fields are empty
     if (!email.value || !password.value) {
         message.value = 'Please enter your email and password.'
         isError.value = true
@@ -27,33 +23,37 @@ const handleLogin = async () => {
     isError.value = false
 
     try {
-        // Send POST request to the authentication endpoint
-        const response = await fetch('https://my-noxio-test.free.beeceptor.com', {
+        const response = await fetch('https://hrica.skyro.dev/api/v1/auth/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: email.value, password: password.value })
+            body: JSON.stringify({ 
+                email: email.value, 
+                password: password.value 
+            })
         })
 
-        let data: any = {}
-        try { data = await response.json() } catch (e) { }
+        const result = await response.json()
 
-        if (response.ok) {
-            // Successful login logic
+        if (result.success) {
+            // 1. Проверяем, есть ли токен в ответе
+            if (result.data && result.data.accessToken) {
+                // СОХРАНЯЕМ ТОКЕН
+                localStorage.setItem('auth_token', result.data.accessToken)
+            }
+
             isError.value = false
-            message.value = 'Login successful! Redirecting...'
-            // Redirect to dashboard after a short delay for user to read the message
+            message.value = result.message
+            
+            // 2. Логика редиректа
             setTimeout(() => router.push('/dashboard'), 1500)
         } else {
-            // Server returned an error (e.g., 401 Unauthorized)
             isError.value = true
-            message.value = data.error || 'Login failed. Please try again.'
+            message.value = result.message || 'Login failed.'
         }
-    } catch {
-        // Handle network errors or server downtime
+    } catch (error) {
         isError.value = true
         message.value = 'Network error. Please check your connection.'
     } finally {
-        // Always reset loading state to re-enable the button
         isLoading.value = false
     }
 }
@@ -62,9 +62,6 @@ const handleGoogleLogin = () => {
     // TODO: implement Google OAuth
 }
 
-const handleForgotPassword = () => {
-    // TODO: implement forgot password
-}
 </script>
 
 <template>
@@ -111,9 +108,9 @@ const handleForgotPassword = () => {
                     </div>
 
                     <div class="flex justify-end">
-                        <button type="button" class="forgot-link" @click="handleForgotPassword">
-                            Forgot Password?
-                        </button>
+                         <router-link to="/auth/forgot-password" class="forgot-link">
+                        Forgot Password?
+                        </router-link>
                     </div>
 
                     <button type="submit" :disabled="isLoading" class="btn-primary">
@@ -130,7 +127,7 @@ const handleForgotPassword = () => {
 
                 <p class="text-center text-sm">
                     <span class="text-panel-label">Don't have an account? </span>
-                    <router-link to="/register" class="text-panel-text font-semibold hover:underline transition-all">
+                    <router-link to="/auth/register" class="text-panel-text font-semibold hover:underline transition-all">
                         Sign up
                     </router-link>
                 </p>

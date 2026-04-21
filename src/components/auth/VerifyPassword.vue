@@ -1,6 +1,12 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+
+onMounted(() => {
+    if (inputs.value[0]) {
+        inputs.value[0].focus()
+    }
+})
 
 const router = useRouter()
 
@@ -33,19 +39,42 @@ const handleVerify = async () => {
     const finalCode = code.value.join('')
     if (finalCode.length < 5) return
 
+    // 1. Извлекаем sessionToken, который мы сохранили при регистрации
+    const sessionToken = localStorage.getItem('session_token')
+
+    if (!sessionToken) {
+        isError.value = true
+        console.error('Session token not found. Please register again.')
+        return
+    }
+
     try {
-        const response = await fetch('https://my-noxio-test.free.beeceptor.com', {
+        const response = await fetch('https://hrica.skyro.dev/api/v1/auth/2fa/verify', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ code: finalCode })
+            body: JSON.stringify({ 
+                sessionToken: sessionToken, 
+                code: finalCode 
+            })
         })
 
-        if (!response.ok) {
-            isError.value = true
+        const result = await response.json()
+
+        if (result.success) {
+            // Если верификация прошла успешно, обычно бэкенд присылает 
+            // финальный auth_token. Сохраняем его!
+            if (result.data && result.data.token) {
+                localStorage.setItem('auth_token', result.data.token)
+                // Удаляем временный session_token, он больше не нужен
+                localStorage.removeItem('session_token')
+            }
+            
+            router.push('/dashboard') // Теперь можно в консоль управления
         } else {
-            router.push('/login')
+            isError.value = true
         }
-    } catch {
+    } catch (error) {
+        console.error('Verification error:', error)
         isError.value = true
     }
 }
@@ -72,7 +101,6 @@ const handleVerify = async () => {
                             inputmode="text" maxlength="1" class="otp-input" :class="{ 'input-error': isError }"
                             @input="handleInput(i, $event)" @keydown="handleKeyDown(i, $event)" />
                     </div>
-//
                     <div class="flex gap-3">
                         <button type="button" class="btn-secondary w-20" @click="router.back()">
                             Back

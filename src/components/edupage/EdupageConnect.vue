@@ -11,7 +11,7 @@ const handleSignIn = () => {
     router.push({ name: 'EduPageLogin' })
 }
 </script>
-//
+
 <template>
     <div class="min-h-screen flex items-center justify-center bg-panel-bg">
         <div class="text-center space-y-10 px-8 w-full max-w-lg">
