@@ -2,8 +2,8 @@
 import { ref } from 'vue'
 import router from '../../router'
 import { RouterLink } from 'vue-router'
-import EmailInput from '../../components/inputs/EmailInput.vue'
-import PassInput from '../../components/inputs/PassInput.vue'
+import BaseInput from '../../components/inputs/BaseInput.vue'
+import BaseButton from '../../components/buttons/BaseButton.vue'
 
 
 const isLoading = ref(false)
@@ -19,7 +19,7 @@ const handleLogin = async () => {
         return
     }
 
-    isLoading.value = true
+    isLoading.value = false
     message.value = ''
     isError.value = false
 
@@ -80,15 +80,16 @@ const handleGoogleLogin = () => {
 
                 <form @submit.prevent="handleLogin" class="space-y-4">
 
-                    <email-input 
+                    <base-input 
                         v-model="email"
+                        type="email"
                         label="Email" 
                         place-holder="Placeholder" 
                         :is-error="isError"
                         @clear-error="isError = false; message=''" 
                     />
-                    <pass-input
-                        v-model="password"
+                    <base-input
+                        type="text"
                         label="Password"
                         place-holder="Placeholder"
                         :is-error="isError"
@@ -101,9 +102,9 @@ const handleGoogleLogin = () => {
                         </router-link>
                     </div>
 
-                    <button type="submit" :disabled="isLoading" class="btn-primary">
-                        {{ isLoading ? 'Signing in...' : 'Log In' }}
-                    </button>
+                    <base-button 
+                        :is-loading="isLoading"
+                    />
                 </form>
 
                 <div class="text-center text-sm text-panel-label tracking-wider">or</div>
@@ -135,9 +136,6 @@ const handleGoogleLogin = () => {
 
 <style scoped>
 @reference "../../assets/styles/main.css";
-.btn-primary {
-    @apply w-full bg-brand-white text-brand-black px-4 py-3 rounded-auth font-semibold hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer;
-}
 
 .google-btn {
     @apply w-full flex items-center justify-center gap-3 px-4 py-3 rounded-auth font-semibold text-panel-text border border-panel-input-border hover:bg-white/5 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 cursor-pointer;

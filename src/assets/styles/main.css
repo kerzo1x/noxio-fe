@@ -23,9 +23,7 @@
 
 @layer components {
     .field-input {
-        @apply w-full px-4 py-3 rounded-auth outline-none border-none 
-               bg-panel-input-bg text-panel-text placeholder:text-panel-placeholder 
-               transition-all duration-200;
+        @apply w-full px-4 py-3 rounded-auth outline-none border-none bg-panel-input-bg text-panel-text placeholder:text-panel-placeholder transition-all duration-200;
     }
 
     .field-input:focus {
@@ -35,4 +33,9 @@
     .field-input.input-error {
         @apply ring-2 ring-error;
     }
+
+    .btn-base {
+        @apply w-full bg-brand-white text-brand-black px-4 py-3 rounded-auth font-semibold hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer;
+    }
+
 }
