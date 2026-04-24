@@ -25,15 +25,4 @@ const emit = defineEmits(
 </template>
 <style>
 @reference "../../assets/styles/main.css";
-.field-input {
-    @apply w-full px-4 py-3 rounded-auth outline-none border-none bg-panel-input-bg text-panel-text placeholder:text-panel-placeholder transition-all duration-200;
-}
-
-.field-input:focus {
-    @apply ring-1 ring-panel-text/30;
-}
-
-.field-input.input-error {
-    @apply ring-2 ring-error;
-}
 </style>

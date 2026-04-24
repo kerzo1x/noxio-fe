@@ -1,11 +1,31 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+
+const model = defineModel<string>()
+
+defineProps({
+    isError: Boolean,
+    label: String,
+    placeHolder: String,
+
+})
+const emit = defineEmits(
+    ['clear-error']
+)
+const showPassword = ref(false)
 </script>
 <template>
-    <div class="field">
-        <label class="field-label">Password</label>
+    <div class="flex flex-col gap-1.5">
+        <label class="text-sm font-medium text-panel-label">{{ label }}</label>
         <div class="relative">
-            <input v-model="password" :type="showPassword ? 'text' : 'password'" placeholder="Placeholder"
-                class="field-input pr-11" :class="{ 'input-error': isError }" @input="isError = false; message = ''" />
+            <input 
+                v-model="model" 
+                :type="showPassword ? 'text' : 'password'" 
+                :placeholder="placeHolder"
+                class="field-input pr-11" 
+                :class="{ 'input-error': isError }" 
+                @input="emit('clear-error')" 
+            />
 
             <button type="button" class="eye-btn" @click="showPassword = !showPassword"
                 :aria-label="showPassword ? 'Hide password' : 'Show password'">
@@ -24,3 +44,10 @@
         </div>
     </div>
 </template>
+<style>
+@reference "../../assets/styles/main.css";
+.eye-btn {
+    @apply absolute right-3 top-1/2 -translate-y-1/2 text-panel-placeholder hover:text-panel-label transition-colors duration-200 cursor-pointer;
+}
+
+</style>
