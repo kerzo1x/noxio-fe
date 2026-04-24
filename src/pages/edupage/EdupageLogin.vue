@@ -7,7 +7,6 @@ const router = useRouter()
 const isLoading = ref(false)
 const email = ref('')
 const password = ref('')
-const showPassword = ref(false)
 const message = ref('')
 const isError = ref(false)
 
