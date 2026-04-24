@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import BaseButton from '../../components/buttons/BaseButton.vue'
 import { useRouter } from 'vue-router'
-
 const router = useRouter()
 
 const handleSkip = () => {
@@ -20,12 +20,10 @@ const handleSignIn = () => {
                 <h1 class="text-4xl font-bold text-panel-text">Sign in to EduPage</h1>
                 <p class="text-panel-label text-sm tracking-wide">so you can see your timetable</p>
             </div>
-
-            <div class="flex">
-                <button type="button" class="btn-primary flex-1" @click="handleSignIn">
-                    Sign in
-                </button>
-            </div>
+            <base-button 
+              text="Sign In"
+              @click="handleSignIn"
+            />
 
             <button type="button" class="skip-link" @click="handleSkip">
                 skip step

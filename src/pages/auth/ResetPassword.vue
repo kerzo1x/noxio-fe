@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import BaseButton from '../../components/buttons/BaseButton.vue'
+import BaseInput from '../../components/inputs/BaseInput.vue'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -76,22 +78,32 @@ const handleResetPassword = async () => {
 
       <form @submit.prevent="handleResetPassword" class="space-y-6">
         <div class="space-y-4">
-          <div class="space-y-2">
-            <label class="text-sm font-medium text-panel-label ml-1">New password</label>
-            <input v-model="password" type="password" placeholder="Placeholder" class="field-input"
-              :class="{ 'input-error': isError }" required />
-          </div>
+          <base-input
+              v-model="password"
+              type="password"
+              label="New Password" 
+              place-holder="Placeholder" 
+              :is-error="isError"
+              @clear-error="isError = false; 
+              // message=''
+              " 
+          />
+          <base-input
+              v-model="confirmPassword"
+              type="password"
+              label="Password Confirmation" 
+              place-holder="Placeholder" 
+              :is-error="isError"
+              @clear-error="isError = false; 
+              // message=''
+              " 
+          />
 
-          <div class="space-y-2">
-            <label class="text-sm font-medium text-panel-label ml-1">Password confirmation</label>
-            <input v-model="confirmPassword" type="password" placeholder="Placeholder" class="field-input"
-              :class="{ 'input-error': isError }" required />
-          </div>
+          <base-button 
+            :is-loading="isLoading"
+            text="Log In"
+          />
         </div>
-
-        <button type="submit" class="btn-primary w-full" :disabled="isLoading">
-          {{ isLoading ? 'Resetting...' : 'Reset password' }}
-        </button>
       </form>
 
       <div class="h-6 text-center">

@@ -151,6 +151,7 @@ const handleVerify = async () => {
                             type="text"
                             inputmode="text" 
                             maxlength="1" 
+                            autocomplete="one-time-code"
                             class="otp-input" 
                             :class="{ 'input-error': isError }"
                             @input="handleInput(i, $event)" 

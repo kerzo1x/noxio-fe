@@ -1,11 +1,12 @@
-<script setup lang="js">
+<script setup lang="ts">
 defineProps({
+    text: String,
     isLoading: Boolean
 })
 </script>
 <template>
     <button type="submit" :disabled="isLoading" class="btn-base">
-        {{ isLoading ? 'Signing in...' : 'Log In' }}
+        {{ isLoading ? 'Loading...' : text }}
     </button>
 </template>
 <style>

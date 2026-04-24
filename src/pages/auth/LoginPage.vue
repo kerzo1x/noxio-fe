@@ -14,7 +14,7 @@ const isError = ref(false)
 
 const handleLogin = async () => {
     if (!email.value || !password.value) {
-        message.value = 'Please enter your email and password.'
+        message.value = 'Please fill in all fields.'
         isError.value = true
         return
     }
@@ -79,22 +79,24 @@ const handleGoogleLogin = () => {
                 <h1 class="text-4xl font-bold text-panel-text">Log In</h1>
 
                 <form @submit.prevent="handleLogin" class="space-y-4">
-
-                    <base-input 
-                        v-model="email"
-                        type="email"
-                        label="Email" 
-                        place-holder="Placeholder" 
-                        :is-error="isError"
-                        @clear-error="isError = false; message=''" 
-                    />
-                    <base-input
-                        type="text"
-                        label="Password"
-                        place-holder="Placeholder"
-                        :is-error="isError"
-                        @clear-error="isError = false; message=''"
-                    />
+                    <div class="flex flex-col gap-4">
+                        <base-input 
+                            v-model="email"
+                            type="email"
+                            label="Email" 
+                            place-holder="Placeholder" 
+                            :is-error="isError"
+                            @clear-error="isError = false; message=''" 
+                        />
+                        <base-input
+                            v-model="password"
+                            type="password"
+                            label="Password"
+                            place-holder="Placeholder"
+                            :is-error="isError"
+                            @clear-error="isError = false; message=''"
+                        />
+                    </div>
 
                     <div class="flex justify-end">
                         <router-link to="/auth/forgot-password" class="text-sm text-panel-label hover:text-panel-text transition-colors duration-200">
@@ -104,6 +106,7 @@ const handleGoogleLogin = () => {
 
                     <base-button 
                         :is-loading="isLoading"
+                        text="Log In"
                     />
                 </form>
 

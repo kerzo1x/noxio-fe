@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import BaseInput from '../../components/inputs/BaseInput.vue'
+import BaseButton from '../../components/buttons/BaseButton.vue'
+
 
 const router = useRouter()
 const email = ref('')
@@ -61,21 +64,23 @@ const handleSendCode = async () => {
 
       <form @submit.prevent="handleSendCode" class="space-y-6 text-left">
         <div class="space-y-2">
-          <label class="text-sm font-medium text-panel-label ml-1">Email</label>
-          <input
+          <base-input 
             v-model="email"
             type="email"
-            placeholder="Placeholder"
-            class="field-input"
-            :class="{ 'input-error': isError }"
-            @input="isError = false"
-            required
-          />
-        </div>
+            label="Email" 
+            place-holder="Placeholder" 
+            :is-error="isError"
+            @clear-error="isError = false; 
+            // message=''
+            "
+        />
+      </div>
+      <!-- TODO: normal error  -->
 
-        <button type="submit" class="btn-primary w-full" :disabled="isLoading">
-          {{ isLoading ? 'Sending...' : 'Send reset code' }}
-        </button>
+        <base-button 
+          :is-loading="isLoading"
+          text="Send reset code"
+        />
       </form>
 
       <div class="h-6">
@@ -89,22 +94,6 @@ const handleSendCode = async () => {
 
 <style scoped>
 @reference "../../assets/styles/main.css";
-
-.field-input {
-  @apply w-full px-4 py-3 rounded-auth outline-none border-none
-         bg-panel-input-bg text-panel-text 
-         placeholder:text-panel-placeholder
-         transition-all duration-200;
-}
-
-.field-input:focus {
-  @apply ring-1 ring-panel-text/30;
-}
-
-.field-input.input-error {
-  @apply ring-2 ring-error;
-}
-
 .btn-primary {
   @apply bg-brand-white text-brand-black py-3 rounded-auth font-semibold
          hover:opacity-90 hover:scale-[1.01] active:scale-[0.99]
