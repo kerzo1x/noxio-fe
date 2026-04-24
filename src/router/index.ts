@@ -1,4 +1,4 @@
-import HomePage from '../components/dashboard/HomePage.vue'
+import HomePage from '../pages/dashboard/HomePage.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 
@@ -10,37 +10,37 @@ const routes: Array<RouteRecordRaw> = [
             {
                 path: 'register',
                 name: 'Register',
-                component: () => import('../components/auth/RegisterPage.vue')
+                component: () => import('../pages/auth/RegisterPage.vue')
             },
             {
                 path: 'login',
                 name: 'Login',
-                component: () => import('../components/auth/LoginPage.vue')
+                component: () => import('../pages/auth/LoginPage.vue')
             },
             {
                 path: 'verify',
                 name: 'Verify',
-                component: () => import('../components/auth/VerifyPassword.vue')
+                component: () => import('../pages/auth/VerifyPassword.vue')
             },
             {
                 path: 'forgot-password',
                 name: 'ForgotPassword',
-                component: () => import('../components/auth/ForgotPassword.vue')
+                component: () => import('../pages/auth/ForgotPassword.vue')
             },
             {
                 path: 'reset-password',
                 name: 'ResetPassword',
-                component: () => import('../components/auth/ResetPassword.vue')
+                component: () => import('../pages/auth/ResetPassword.vue')
             },
             {
                 path: 'edupage',
                 name: 'EdupageConnect',
-                component: () => import('../components/edupage/EdupageConnect.vue')
+                component: () => import('../pages/edupage/EdupageConnect.vue')
             },
             {
                 path: 'edupage/login',
                 name: 'EdupageLogin',
-                component: () => import('../components/edupage/EdupageLogin.vue')
+                component: () => import('../pages/edupage/EdupageLogin.vue')
             }
         ]
     },

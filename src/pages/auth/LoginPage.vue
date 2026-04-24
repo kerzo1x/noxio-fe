@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import router from '../../router'
 import { RouterLink } from 'vue-router'
+import EmailInput from '../../components/inputs/EmailInput.vue'
 
 
 const isLoading = ref(false)
@@ -79,12 +80,12 @@ const handleGoogleLogin = () => {
 
                 <form @submit.prevent="handleLogin" class="space-y-4">
 
-                    <div class="field">
-                        <label class="field-label">Email</label>
-                        <input v-model="email" type="email" placeholder="Placeholder" class="field-input"
-                            :class="{ 'input-error': isError }" @input="isError = false; message = ''" />
-                    </div>
-
+                    <email-input 
+                        label="Email" 
+                        place-holder="Placeholder" 
+                        :is-error="isError"
+                        @clear-error="isError = false; message=''" v-model="email"
+                    />
                     <div class="field">
                         <label class="field-label">Password</label>
                         <div class="relative">
