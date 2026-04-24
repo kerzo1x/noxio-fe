@@ -135,7 +135,7 @@ const handleGoogleLogin = () => {
           </button>
         </form>
 
-        <div class="text-center text-sm text-panel-label uppercase tracking-wider">or</div>
+        <div class="text-center text-sm text-panel-label tracking-wider">or</div>
         <button type="button" class="google-btn" @click="handleGoogleLogin">
           <img src="../../assets/img/google.png" class="w-5 h-5" alt="Google" />
           Continue with Google
@@ -184,14 +184,14 @@ const handleGoogleLogin = () => {
 }
 
 .btn-primary {
-  @apply w-full bg-brand-white text-brand-black px-4 py-3 rounded-auth font-semibold hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed;
+  @apply w-full bg-brand-white text-brand-black px-4 py-3 rounded-auth font-semibold hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer;
 }
 
 .google-btn {
-  @apply w-full flex items-center justify-center gap-3 px-4 py-3 rounded-auth font-semibold text-panel-text border border-panel-input-border hover:bg-white/5 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200;
+  @apply w-full flex items-center justify-center gap-3 px-4 py-3 rounded-auth font-semibold text-panel-text border border-panel-input-border hover:bg-white/5 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 cursor-pointer;
 }
 
 .eye-btn {
-  @apply absolute right-3 top-1/2 -translate-y-1/2 text-panel-placeholder hover:text-panel-label transition-colors duration-200;
+  @apply absolute right-3 top-1/2 -translate-y-1/2 text-panel-placeholder hover:text-panel-label transition-colors duration-200 cursor-pointer;
 }
 </style>

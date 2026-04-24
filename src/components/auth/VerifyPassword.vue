@@ -210,14 +210,14 @@ const handleVerify = async () => {
 }
 
 .btn-primary {
-    @apply bg-brand-white text-brand-black py-3 rounded-auth font-semibold hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200;
+    @apply bg-brand-white text-brand-black py-3 rounded-auth font-semibold hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 cursor-pointer;
 }
 
 .btn-secondary {
-    @apply py-3 rounded-auth font-semibold text-panel-label border border-panel-input-border hover:bg-white/5 hover:text-panel-text hover:scale-[1.02] active:scale-[0.98] transition-all duration-200;
+    @apply py-3 rounded-auth font-semibold text-panel-label border border-panel-input-border hover:bg-white/5 hover:text-panel-text hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 cursor-pointer;
 }
 .resend-link {
-    @apply text-panel-text font-semibold transition-colors duration-200;
+    @apply text-panel-text font-semibold transition-colors duration-200 cursor-pointer;
 }
 
 .resend-link:disabled {
