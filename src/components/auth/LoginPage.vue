@@ -35,17 +35,20 @@ const handleLogin = async () => {
         const result = await response.json()
 
         if (result.success) {
-
-            if (result.data && result.data.accessToken) {
+            // no 2fa
+            if (result.data.requires2fa === false && result.data.accessToken) {
                 localStorage.setItem('access_token', result.data.accessToken)
+                isError.value = false
+                message.value = result.message
+
+                setTimeout(() => router.push('/home'), 1500)
             }
+            // 2fa
+            else if (result.data.requires2fa === true) {
+                localStorage.setItem('session_token', result.data.sessionToken);
+                router.push('/auth/verify')
 
-            isError.value = false
-            message.value = result.message
-
-            setTimeout(async () => {
-                await router.push('/dashboard')
-            }, 1500)
+            }
         } else {
             isError.value = true
             message.value = result.message || 'Login failed.'
@@ -67,7 +70,7 @@ const handleGoogleLogin = () => {
 <template>
     <div class="min-h-screen flex bg-surface text-text-main">
 
-        <div class="hidden lg:block lg:w-1/2 bg-surface" />
+        <div class="hidden lg:block lg:w-1/2 bg-surface"/>
 
         <div class="w-full lg:w-1/2 flex items-center justify-center p-10 bg-panel-bg">
             <div class="w-full max-w-md space-y-6">

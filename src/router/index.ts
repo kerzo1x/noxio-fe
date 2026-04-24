@@ -1,3 +1,4 @@
+import HomePage from '../components/dashboard/HomePage.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 
@@ -32,26 +33,21 @@ const routes: Array<RouteRecordRaw> = [
                 component: () => import('../components/auth/ResetPassword.vue')
             },
             {
-                path: '/auth/edupage',
-                name: 'EduPageConnect',
+                path: 'edupage',
+                name: 'EdupageConnect',
                 component: () => import('../components/edupage/EdupageConnect.vue')
             },
             {
-                path: '/auth/edupage/login',
-                name: 'EduPageLogin',
+                path: 'edupage/login',
+                name: 'EdupageLogin',
                 component: () => import('../components/edupage/EdupageLogin.vue')
-            },
-            {
-                path: '/home',
-                name: 'Home',
-                component: () => import('../components/dashboard/HomePage.vue')
             }
         ]
     },
     {
         path: '/home',
-        name: 'Home',
-        component: () => import('../components/dashboard/HomePage.vue')
+        name: 'HomePage',
+        component: HomePage // Без стрелочной функции
     },
     {
         // Redirect empty root path to the login page

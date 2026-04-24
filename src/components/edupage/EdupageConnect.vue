@@ -4,11 +4,11 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 
 const handleSkip = () => {
-    // TODO: implement skip
+    router.push({ name: 'HomePage' })
 }
 
 const handleSignIn = () => {
-    router.push({ name: 'EduPageLogin' })
+    router.push({ name: 'EdupageLogin' })
 }
 </script>
 
@@ -21,10 +21,7 @@ const handleSignIn = () => {
                 <p class="text-panel-label text-sm tracking-wide">so you can see your timetable</p>
             </div>
 
-            <div class="flex gap-4">
-                <button type="button" class="btn-secondary flex-1" @click="handleSkip">
-                    Skip
-                </button>
+            <div class="flex">
                 <button type="button" class="btn-primary flex-1" @click="handleSignIn">
                     Sign in
                 </button>
@@ -42,14 +39,10 @@ const handleSignIn = () => {
 @reference "../../assets/styles/main.css";
 
 .btn-primary {
-    @apply bg-brand-white text-brand-black py-3 rounded-auth font-semibold hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200;
-}
-
-.btn-secondary {
-    @apply py-3 rounded-auth font-semibold text-panel-text border border-panel-input-border hover:bg-white/5 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200;
+    @apply bg-brand-white text-brand-black py-3 rounded-auth font-semibold hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 cursor-pointer;
 }
 
 .skip-link {
-    @apply text-sm text-panel-label underline underline-offset-2 hover:text-panel-text transition-colors duration-200;
+    @apply text-sm text-panel-label underline underline-offset-2 hover:text-panel-text transition-colors duration-200 cursor-pointer;
 }
 </style>

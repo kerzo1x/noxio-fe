@@ -111,6 +111,7 @@ const handleVerify = async () => {
                 localStorage.setItem('verification_code', finalCode)
                 router.push('/auth/reset-password')
             } else {
+                console.log(result.accessToken)
                 if (result.data?.accessToken) {
                     localStorage.setItem('access_token', result.data.accessToken)
                 }

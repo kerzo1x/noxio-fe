@@ -4,7 +4,6 @@
 
 В `Login.vue` при успехе сразу идёт на `/dashboard`, но судя по регистрации у тебя есть 2FA. Если бэкенд возвращает `sessionToken` вместо `accessToken` — нужно редиректить на `/auth/verify`. Проверь что именно возвращает `/auth/login` при успехе.
 
-**`Cyborg Discipline` комментарий в reset-password** — это мусор, убери 😄
 
 **Мелочь — register.vue:**
 ```ts

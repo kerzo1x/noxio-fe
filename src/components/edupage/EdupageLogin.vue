@@ -10,6 +10,10 @@ const showPassword = ref(false)
 const message = ref('')
 const isError = ref(false)
 
+const handleSkip = async () => {
+    await router.push({ name: 'HomePage' })
+}
+
 const handleLogin = async () => {
     if (!email.value || !password.value) {
         message.value = 'Please enter your credentials.'
@@ -49,15 +53,13 @@ const handleLogin = async () => {
 
 <template>
     <div class="min-h-screen flex items-center justify-center p-6 bg-brand-black font-sans text-center">
-        <div class="w-full max-w-sm flex flex-col items-center">
+        <div class="w-full max-w-lg flex flex-col items-center">
 
-            <div class="space-y-4 mb-10 max-w-70">
+            <div class="space-y-4 mb-10 max-w-full">
                 <h1 class="text-4xl font-bold text-brand-white leading-tight">
                     Sign in to EduPage
                 </h1>
-                <p class="text-panel-label text-[10px] tracking-[0.25em] font-medium opacity-80 uppercase">
-                    so you can see your timetable
-                </p>
+                <p class="text-panel-label text-sm tracking-wide">so you can see your timetable</p>
             </div>
 
             <form @submit.prevent="handleLogin" class="w-full space-y-6 text-left">
@@ -93,13 +95,11 @@ const handleLogin = async () => {
                 </div>
 
                 <button type="submit" :disabled="isLoading" class="btn-primary">
-                    {{ isLoading ? 'Integrating...' : 'Integrate EduPage' }}
+                    {{ isLoading ? 'Integrating...' : 'Sign in to EduPage' }}
                 </button>
             </form>
-
-            <div class="mt-8 flex flex-col items-center gap-4">
-                <button @click="router.push('/home')"
-                    class="text-panel-label text-sm underline underline-offset-8 decoration-1 hover:text-panel-text transition-colors">
+            <div class="mt-10">
+                <button type="button" class="skip-link" @click="handleSkip">
                     skip step
                 </button>
             </div>
@@ -122,14 +122,17 @@ const handleLogin = async () => {
 }
 
 .eye-btn {
-    @apply absolute right-3 top-1/2 -translate-y-1/2 text-panel-placeholder hover:text-panel-label transition-colors;
+    @apply absolute right-3 top-1/2 -translate-y-1/2 text-panel-placeholder hover:text-panel-label transition-colors cursor-pointer;
 }
 
 .btn-primary {
-    @apply w-full bg-brand-white text-brand-black py-4 rounded-auth font-bold text-lg hover:bg-brand-white/90 active:scale-[0.98] transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed;
+    @apply w-full bg-brand-white text-brand-black rounded-auth font-bold h-12 text-lg hover:bg-brand-white/90 active:scale-[0.98] transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer;
 }
 
 .btn-white-fix {
     @apply bg-white text-black hover:bg-white/90;
+}
+.skip-link {
+    @apply text-sm text-panel-label underline underline-offset-2 hover:text-panel-text transition-colors duration-200 cursor-pointer;
 }
 </style>
