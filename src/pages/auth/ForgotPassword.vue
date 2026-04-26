@@ -37,7 +37,7 @@ const handleSendCode = async () => {
 
       router.push({ 
         path: '/auth/verify',
-        state: { flow: 'reset' }
+        query: {from: "forgot"}
       })
     } else {
       isError.value = true
@@ -85,7 +85,7 @@ const handleSendCode = async () => {
 
       <div class="h-6">
         <p v-if="isError" class="text-error text-sm font-medium">
-          User with this email not found.
+          Something went wrong.
         </p>
       </div>
     </div>

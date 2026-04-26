@@ -47,7 +47,8 @@ const handleLogin = async () => {
             // 2fa
             else if (result.data.requires2fa === true) {
                 localStorage.setItem('session_token', result.data.sessionToken);
-                router.push('/auth/verify')
+                isError.value = false
+                router.push({path: '/auth/verify', query: {from: "login"}})
 
             }
         } else {
@@ -106,7 +107,7 @@ const handleGoogleLogin = () => {
 
                     <base-button 
                         :is-loading="isLoading"
-                        text="Log In"
+                        text="Log in"
                     />
                 </form>
 

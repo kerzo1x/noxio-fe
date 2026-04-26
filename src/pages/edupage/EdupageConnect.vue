@@ -2,13 +2,12 @@
 import BaseButton from '../../components/buttons/BaseButton.vue'
 import { useRouter } from 'vue-router'
 const router = useRouter()
-
 const handleSkip = () => {
     router.push({ name: 'HomePage' })
 }
 
 const handleSignIn = () => {
-    router.push({ name: 'EdupageLogin' })
+    router.push({ name: 'EdupageLogin', query: {from: "register"} })
 }
 </script>
 

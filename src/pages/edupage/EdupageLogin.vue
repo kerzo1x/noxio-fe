@@ -10,6 +10,8 @@ const password = ref('')
 const message = ref('')
 const isError = ref(false)
 
+
+
 const handleSkip = async () => {
     await router.push({ name: 'HomePage' })
 }

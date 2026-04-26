@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 
 const router = useRouter()
-
-
-const flow = history.state?.flow || 'register'
+const route = useRoute()
 const userEmail = ref(localStorage.getItem('user_email') || 'your email')
 const code = ref(['', '', '', '', ''])
 const inputs = ref<HTMLInputElement[]>([])
@@ -93,9 +91,6 @@ const handleVerify = async () => {
         router.push('/auth/login')
         return
     }
-    console.log(sessionToken)
-    console.log(typeof(sessionToken))
-    console.log("session token")
     isLoading.value = true
     try {
         const response = await fetch('https://hrica.skyro.dev/api/v1/auth/2fa/verify', {
@@ -107,19 +102,21 @@ const handleVerify = async () => {
         const result = await response.json()
 
         if (result.success) {
-            if (flow === 'reset') {
-                localStorage.setItem('verification_code', finalCode)
+            if (result.data.sessionToken && route.query.from === "forgot") {
+                localStorage.setItem('session_token', result.data.sessionToken)
                 router.push('/auth/reset-password')
             } else {
-                console.log(result.accessToken)
-                if (result.data?.accessToken) {
+                if (result.data.accessToken) {
                     localStorage.setItem('access_token', result.data.accessToken)
+                    localStorage.removeItem('session_token')
+                    router.push(route.query.from === "register" ? '/auth/edupage' : '/home')
                 }
-                localStorage.removeItem('session_token')
-                router.push('/home')
             }
         } else {
-            isError.value = true
+            isError.value = true                
+            if (route.query.from !== 'register' && route.query.from !== 'forgot' && route.query.from !== 'login') {
+                console.log("How the fuck you got there")
+            }
         }
     } catch (error) {
         isError.value = true

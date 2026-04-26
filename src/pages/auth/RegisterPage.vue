@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import router from '../../router'
 import BaseInput from '../../components/inputs/BaseInput.vue'
+import BaseButton from '../../components/buttons/BaseButton.vue'
 
 const isLoading = ref(false)
 const firstName = ref('')
@@ -45,7 +46,7 @@ const handleRegister = async () => {
       isLoading.value = true
       message.value = result.message || 'Verification code sent!';
 
-      setTimeout(() => router.push('/auth/verify'), 1000);
+      setTimeout(() => router.push({path: '/auth/verify', query: {from: "register"} }), 1000);
     } else {
       isError.value = true;
       message.value = result.message || result.error || 'Registration failed';
@@ -120,7 +121,7 @@ const handleGoogleLogin = () => {
 
           <base-button 
               :is-loading="isLoading"
-              text="Log In"
+              text="Sign up"
           />
         </form>
 
