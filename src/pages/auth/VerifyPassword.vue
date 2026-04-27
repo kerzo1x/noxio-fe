@@ -118,7 +118,6 @@ const handleVerify = async () => {
         } else {
             isError.value = true                
             if (route.query.from !== 'register' && route.query.from !== 'forgot' && route.query.from !== 'login') {
-                console.log("How the fuck you got there")
                 console.log("else worked")
             }
         }
