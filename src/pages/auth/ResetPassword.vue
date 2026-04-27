@@ -117,20 +117,4 @@ const handleResetPassword = async () => {
 
 <style scoped>
 @reference "../../assets/styles/main.css";
-
-.field-input {
-  @apply w-full px-4 py-3 rounded-auth outline-none border-none bg-panel-input-bg text-panel-text placeholder:text-panel-placeholder transition-all duration-200;
-}
-
-.field-input:focus {
-  @apply ring-1 ring-panel-text/30;
-}
-
-.field-input.input-error {
-  @apply ring-2 ring-error;
-}
-
-.btn-primary {
-  @apply bg-brand-white text-brand-black py-3 rounded-auth font-semibold hover:opacity-90 hover:scale-[1.01] active:scale-[0.99] transition-all duration-200 disabled:opacity-50 cursor-pointer;
-}
 </style>

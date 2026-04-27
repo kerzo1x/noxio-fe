@@ -153,35 +153,7 @@ const handleGoogleLogin = () => {
 <style scoped>
 @reference "../../assets/styles/main.css";
 
-.field {
-  @apply flex flex-col gap-1.5;
-}
-
-.field-label {
-  @apply text-sm font-medium text-panel-label;
-}
-
-.field-input {
-  @apply w-full px-4 py-3 rounded-auth outline-none border-none bg-panel-input-bg text-panel-text placeholder:text-panel-placeholder transition-all duration-200;
-}
-
-.field-input:focus {
-  @apply ring-1 ring-panel-text/30;
-}
-
-.field-input.input-error {
-  @apply ring-2 ring-error;
-}
-
-.btn-primary {
-  @apply w-full bg-brand-white text-brand-black px-4 py-3 rounded-auth font-semibold hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer;
-}
-
 .google-btn {
   @apply w-full flex items-center justify-center gap-3 px-4 py-3 rounded-auth font-semibold text-panel-text border border-panel-input-border hover:bg-white/5 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 cursor-pointer;
-}
-
-.eye-btn {
-  @apply absolute right-3 top-1/2 -translate-y-1/2 text-panel-placeholder hover:text-panel-label transition-colors duration-200 cursor-pointer;
 }
 </style>

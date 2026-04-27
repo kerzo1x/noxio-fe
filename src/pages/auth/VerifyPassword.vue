@@ -103,24 +103,30 @@ const handleVerify = async () => {
 
         if (result.success) {
             if (result.data.sessionToken && route.query.from === "forgot") {
+                console.log('1 part')
                 localStorage.setItem('session_token', result.data.sessionToken)
                 router.push('/auth/reset-password')
             } else {
                 if (result.data.accessToken) {
+                    console.log('2 part')
                     localStorage.setItem('access_token', result.data.accessToken)
                     localStorage.removeItem('session_token')
                     router.push(route.query.from === "register" ? '/auth/edupage' : '/home')
+                    console.log('router push fucked up')
                 }
             }
         } else {
             isError.value = true                
             if (route.query.from !== 'register' && route.query.from !== 'forgot' && route.query.from !== 'login') {
                 console.log("How the fuck you got there")
+                console.log("else worked")
             }
         }
     } catch (error) {
+        console.log("catch worked")
         isError.value = true
     } finally {
+        console.log('finally worked')
         isLoading.value = false
     }
 }

@@ -7,7 +7,7 @@ const handleSkip = () => {
 }
 
 const handleSignIn = () => {
-    router.push({ name: 'EdupageLogin', query: {from: "register"} })
+    router.push({ name: 'EdupageLogin' })
 }
 </script>
 
@@ -34,11 +34,6 @@ const handleSignIn = () => {
 
 <style scoped>
 @reference "../../assets/styles/main.css";
-
-.btn-primary {
-    @apply bg-brand-white text-brand-black py-3 rounded-auth font-semibold hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 cursor-pointer;
-}
-
 .skip-link {
     @apply text-sm text-panel-label underline underline-offset-2 hover:text-panel-text transition-colors duration-200 cursor-pointer;
 }
