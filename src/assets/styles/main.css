@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100..900&display=swap');
+@import "tailwindcss";
+@import "./variables.css";
+
+@theme {
+    --color-brand-black: var(--main-black);
+    --color-brand-white: var(--main-white);
+    --color-text-main: var(--main-text-black);
+    --color-brand-gray: var(--brand-gray-dark);
+    --color-link: var(--text-link-color);
+    --color-error: var(--color-error);
+    --color-surface: var(--brand-gray-light);
+    --font-sans: "Roboto", sans-serif;
+    --radius-auth: var(--radius-auth);
+
+    --color-panel-bg: var(--panel-bg);
+    --color-panel-text: var(--panel-text);
+    --color-panel-input-bg: var(--panel-input-bg);
+    --color-panel-input-border: var(--panel-input-border);
+    --color-panel-placeholder: var(--panel-input-placeholder);
+    --color-panel-label: var(--panel-label);
+}
+
+@layer components {
+    .field-input {
+        @apply mt-1 w-full px-4 py-3 rounded-auth outline-none border-none bg-panel-input-bg text-panel-text placeholder:text-panel-placeholder transition-all duration-200;
+    }
+
+    .field-input:focus {
+        @apply ring-1 ring-panel-text/30;
+    }
+
+    .field-input.input-error {
+        @apply ring-2 ring-error;
+    }
+
+    .btn-base {
+        @apply w-full bg-brand-white text-brand-black px-4 py-3 rounded-auth font-semibold hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer;
+    }
+
+}

@@ -1,173 +1,80 @@
-git push origin sync
+1. Единый UI Kit (Базовые компоненты)
+Вместо копипасты верстки мы создаем «кирпичики», которые сами знают, как себя вести.
 
-<script setup lang="ts">
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+- done BaseInput.vue: Один компонент на все случаи. Умеет показывать лейбл, обрабатывать ошибки, менять тип (text/email/password) и сам рендерит «глазик» для пароля через v-if="type === 'password'.
 
-const router = useRouter()
-const code = ref(['', '', '', '', ''])
-const inputs = ref<HTMLInputElement[]>([])
+- done BaseButton.vue: Принимает isLoading, блокируется при отправке и меняет текст/показывает спиннер.
 
-const handleInput = (index: number, e: Event) => {
-  const target = e.target as HTMLInputElement
-  const value = target.value.slice(-1)
-  
-  if (value && /^\d+$/.test(value)) {
-    code.value[index] = value
-    if (index < 4) inputs.value[index + 1].focus()
-  } else {
-    code.value[index] = ''
-  }
-}
+BaseMessage.vue: (В планах) Универсальная плашка для вывода ошибок бэкенда или успеха.
 
-const handleKeyDown = (index: number, e: KeyboardEvent) => {
-  if (e.key === 'Backspace' && !code.value[index] && index > 0) {
-    inputs.value[index - 1].focus()
-  }
-}
+2. Глобальная чистка стилей (Tailwind DRY)
+Выносим повторяющиеся классы (типа .field-input, .btn-primary) в src/assets/styles/main.css через директиву @layer components { @apply ... }.
 
-const handleVerify = () => {
-  console.log("Full code:", code.value.join(''))
-}
-</script>
+В самих компонентах оставляем только уникальную логику, чтобы HTML не превращался в «кашу» из 50 классов.
 
-<template>
-  <div class="min-h-screen flex items-center justify-center bg-surface font-sans">
-    <div class="w-full max-w-md p-8 bg-brand-white rounded-2xl text-center">
-      <h1 class="text-3xl font-bold mb-2 text-brand-black">Verify your email</h1>
-      <p class="text-brand-gray text-sm mb-10">we have send verification to email@gmail.com</p>
+3. Реорганизация логики (API Layer)
+Переходим от «дикого» феча внутри компонентов к системному подходу:
 
-      <div class="flex justify-center gap-3 mb-10">
-        <input 
-          v-for="(n, i) in 5" :key="i"
-          ref="inputs"
-          v-model="code[i]"
-          type="text"
-          class="w-14 h-16 text-center text-2xl font-bold border-2 border-brand-gray rounded-xl focus:border-brand-black outline-none transition-all"
-          @input="handleInput(i, $event)"
-          @keydown="handleKeyDown(i, $event)"
-        />
-      </div>
+Axios: Создаем экземпляр с baseURL, чтобы не хардкодить https://hrica.skyro.dev/... в каждом файле.
 
-      <div class="flex gap-4">
-        <button @click="router.back()" class="flex-1 p-3 bg-gray-200 rounded-lg font-semibold hover:bg-gray-300">Back</button>
-        <button @click="handleVerify" class="flex-[2] p-3 bg-gray-300 rounded-lg font-semibold hover:bg-gray-400">Verify</button>
-      </div>
-    </div>
-  </div>
-</template>
+Services: Выносим запросы в отдельные файлы (например, auth.service.ts). Компонент страницы должен просто сказать: auth.login(data), а не знать, какие там заголовки и методы.
 
+TypeScript: Описываем интерфейсы ответов, чтобы забыть про ошибку implicitly has an 'any' type.
 
+4. Наведение порядка в Git
+- done Переименовываем ветку из «страшной» в понятную: refactor/modular-ui или refactor/v2-architecture.
 
+- done Синхронизируем локальное имя с GitHub/GitLab через удаление старой ветки и пуш новой.
 
+5. UX без костылей (Прощай, setTimeout)
+Удаляем искусственные задержки. Если бэкенд быстрый (0.3с) — фронтенд должен летать.
 
+Плавность через Vue Transitions: Вместо того чтобы заставлять юзера ждать 1.5 сек, делаем мягкий fade переход между логином и 2FA/главной.
 
+Фидбек: Сообщение «Success» показываем либо моментально перед переходом, либо уже как приветствие на следующей странице.
 
-REGISTER 
-<template>
-  <div class="min-h-screen flex font-sans overflow-hidden">
-    
-    <div class="hidden lg:flex bg-brand-gray items-center justify-center" style="flex: 0 0 49.3%;">
-      <div class="text-brand-black font-bold text-4xl tracking-tighter">NOXIO</div>
-    </div>
+1. Error Handling & Logger (Твой "Черный ящик")
+Вместо того чтобы в каждом компоненте писать try { ... } catch (e) { console.error(e) }, мы сделаем централизованную систему.
 
-    <div class="flex-1 bg-brand-white flex justify-end" style="position: relative;">
-      
-      <div class="w-full max-w-md pt-[215px] pr-[151px] pb-[168px] ml-auto">
-        
-        <h1 class="text-4xl font-bold mb-8 text-brand-black">Sign Up</h1>
+Глобальный перехватчик (Axios Interceptor): Все ошибки от бэкенда (401, 500, 403) будут ловиться в одном месте. Если пришла 401 — автоматически кидаем на логин.
 
-        <form @submit.prevent="handleRegister" class="space-y-4">
-          <div class="flex gap-4">
-            <input v-model="firstName" type="text" placeholder="First Name" class="form-input" required />
-            <input v-model="lastName" type="text" placeholder="Last Name" class="form-input" required />
-          </div>
-          <input v-model="email" type="email" placeholder="Email" class="form-input" required />
-          <input v-model="password" type="password" placeholder="Password" class="form-input" required />
+Logger Service: Создадим утилиту src/utils/logger.ts.
 
-          <button type="submit" :disabled="isLoading" class="btn-primary mt-2">
-            <span v-if="isLoading">Processing...</span>
-            <span v-else>Sign up</span>
-          </button>
-        </form>
+Зачем: В режиме разработки она спамит в консоль красиво, а в продакшене — может отправлять логи в Sentry или просто молчать.
 
-        <div class="text-center my-6 text-sm text-brand-gray uppercase font-medium tracking-wider">
-          or
-        </div>
+2. Validation (Живой фидбек)
+Чтобы инпут краснел сразу, а не после того, как бэкенд выругается.
 
-        <button type="button"
-          class="w-full flex items-center justify-center gap-3 p-3 border border-brand-gray rounded-auth font-semibold hover:bg-surface transition-all text-brand-black"
-          @click="handleGoogleLogin">
-          <img src="../../assets/img/google.png" class="w-5 h-5" alt="Google" />
-          Continue with Google
-        </button>
+Схема валидации: Будем использовать либо легкую самописную логику в BaseInput, либо библиотеку (VeeValidate/Zod).
 
-        <div class="mt-8 text-center text-sm">
-          <span class="text-brand-gray">Already have an account? </span>
-          <router-link to="/login" class="text-brand-black font-semibold hover:underline transition-all">
-            Log in
-          </router-link>
-        </div>
-        
-        <p v-if="message"
-          :class="['mt-4 text-center text-sm font-medium', message.includes('successful') ? 'text-green-600' : 'text-error']">
-          {{ message }}
-        </p>
-      </div>
-    </div>
-  </div>
-</template>
+UX: Если поле пустое или формат почты неверный — кнопка BaseButton остается задизейблена.
 
-<style scoped>
-@reference "../../assets/styles
+3. Enter (Клавиатурный ниндзя)
+Native Form Submit: Мы уже обернули всё в <form>, так что Enter работает.
 
+Автофокус: Добавим пропс autofocus в BaseInput, чтобы юзер мог начать печатать сразу, не трогая мышку.
 
-VERIFY 
-<template>
-  <div class="min-h-screen flex font-sans overflow-hidden">
-    
-    <!-- left side -->
-    <div class="hidden md:block bg-gray-200" style="flex: 0 0 42.9%;">
-    </div>
-    <!-- right side -->
-    <div class="flex-1 bg-white flex items-center justify-center p-6 md:p-12">
-      
-      <div class="w-full max-w-[400px] text-center">
-        
-        <h1 class="text-4xl font-bold mb-4 text-brand-black">Verify your email</h1>
-        <p class="text-gray-500 text-lg mb-12">we have send verification to email@gmail.com</p>
+4. Skeletons (Визуальная скорость)
+Пока Axios ждет ответа от бэкенда 0.3с, мы не показываем пустой экран.
 
-        <div class="flex justify-center gap-3 md:gap-4 mb-14">
-          <input 
-            v-for="(n, i) in 5" 
-            :key="i"
-            ref="inputs"
-            v-model="code[i]"
-            type="text"
-            inputmode="numeric"
-            class="w-14 h-20 md:w-16 md:h-24 text-center text-4xl font-bold border border-gray-300 rounded-2xl focus:border-black focus:ring-1 focus:ring-black outline-none transition-all"
-            @input="handleInput(i, $event)"
-            @keydown="handleKeyDown(i, $event)"
-          />
-        </div>
+BaseSkeleton.vue: Создадим универсальный серый анимированный блок.
 
-        <div class="flex gap-4 justify-center items-center">
-          <button 
-            type="button"
-            @click="router.back()" 
-            class="px-10 py-4 bg-gray-200 rounded-xl font-bold text-gray-700 hover:bg-gray-300 transition-colors"
-          >
-            Back
-          </button>
-          <button 
-            type="button"
-            @click="handleVerify"
-            class="flex-1 bg-gray-200 py-4 rounded-xl font-bold text-gray-700 hover:bg-gray-300 transition-colors"
-          >
-            Verify
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
+Зачем: Это создает ощущение, что приложение загрузилось мгновенно.
+
+5. Toast Notifications (Всплывашки)
+Вместо того чтобы пихать message в верстку каждой страницы, мы будем вызывать уведомление из любой точки кода.
+
+Пример: toast.success('Login successful!') или toast.error('Invalid code').
+
+Реализация: Либо через Pinia, либо через готовую библиотеку типа vue-sonner (очень стильная, как раз под твой темный дизайн).
+Децентрализация валидации (isError)
+
+Вместо одной общей isError используй объект состояний (например, const errors = ref({ email: false, password: false })).
+
+Передавай в каждый инпут только его конкретный флаг. Это позволит подсвечивать красным только проблемное поле, а не всю форму разом.
+
+Функциональный сброс ошибок
+
+Вынеси логику обнуления сообщений из атрибутов шаблона в метод handleClearError(field).
+
+Это уберет «инвалидные» комментарии // message='' из HTML и позволит одной строчкой сбрасывать и флаг, и текст ошибки.
