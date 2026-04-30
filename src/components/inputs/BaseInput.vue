@@ -7,7 +7,8 @@ defineProps({
     isError: Boolean,
     label: String,
     placeHolder: String,
-    type: String
+    type: String,
+    name: String
 
 })
 const emit = defineEmits(
@@ -21,9 +22,10 @@ const showPassword = ref(false)
         <div class="relative">
             <input
                 v-model="model" 
-                :type="type === 'password' ? (showPassword ? 'text' : 'password') : type"
+                :type="type === 'password' ? (showPassword ? 'text' : 'password') : type"   
                 :placeholder="placeHolder"
-                class="field-input" 
+                class="field-input"
+                :name="name ? name : ' '"
                 :class="{ 'input-error': isError, 'pr-11': type === 'password' }" 
                 @input="emit('clear-error')" 
             />

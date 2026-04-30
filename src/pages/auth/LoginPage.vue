@@ -81,16 +81,21 @@ const handleGoogleLogin = () => {
 
                 <form @submit.prevent="handleLogin" class="space-y-4">
                     <div class="flex flex-col gap-4">
-                        <base-input 
+                        <!-- <base-input></base-input>
+                        <base-input></base-input> -->
+                        <base-input
                             v-model="email"
-                            type="email"
-                            label="Email" 
+                            type="username"
+                            label="Email"
+                            name="email"
                             place-holder="Placeholder" 
+                            autocomplete="email"
                             :is-error="isError"
                             @clear-error="isError = false; message=''" 
                         />
                         <base-input
                             v-model="password"
+                            name="password"
                             type="password"
                             label="Password"
                             place-holder="Placeholder"
