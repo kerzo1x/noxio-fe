@@ -1,24 +1,20 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
-import api from '../../api';
+import { useUserStore } from '@/stores/user';
 import HeaderComponent from './components/HeaderComponent.vue';
+import BannerComponent from './components/BannerComponent.vue';
 
-onMounted(async () => {
-  try {
-    // Просто делаем запрос. 
-    // Если токен протух — интерцептор сам его обновит и вернет данные.
-    // Если токен совсем плохой — интерцептор выкинет на /login.
-    const { data } = await api.get('/auth/me'); 
-    console.log('User data:', data.data);
-  } catch (err) {
-    console.log('error');
-  }
+const userStore = useUserStore();
+
+onMounted(() => {
+  userStore.fetchUser();
 });
 </script>
 
 <template>
     <div>
         <HeaderComponent/>
-        <h1>HOME PAGE</h1>
+        <BannerComponent/>
+        <SidebarComponent/>
     </div>
 </template>
