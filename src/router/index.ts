@@ -1,4 +1,4 @@
-import HomePage from '../pages/dashboard/HomePage.vue'
+import HomePage from '../layouts/DashboardLayout.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 

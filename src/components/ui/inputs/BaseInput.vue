@@ -47,7 +47,7 @@ const showPassword = ref(false)
     </div>
 </template>
 <style>
-@reference "../../assets/styles/main.css";
+@reference "@/assets/styles/main.css";
 .eye-btn {
     @apply absolute right-3 top-1/2 -translate-y-1/2 text-panel-placeholder hover:text-panel-label transition-colors duration-200 cursor-pointer;
 }

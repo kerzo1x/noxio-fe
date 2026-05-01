@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import BaseInput from '../../components/inputs/BaseInput.vue'
-import BaseButton from '../../components/buttons/BaseButton.vue'
+import BaseInput from '@/components/ui/inputs/BaseInput.vue'
+import BaseButton from '@/components/ui/buttons/BaseButton.vue'
 
 
 const router = useRouter()

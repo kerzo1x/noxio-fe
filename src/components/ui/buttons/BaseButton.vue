@@ -10,5 +10,5 @@ defineProps({
     </button>
 </template>
 <style>
-@reference "../../assets/styles/main.css";
+@reference "@/assets/styles/main.css";
 </style>
