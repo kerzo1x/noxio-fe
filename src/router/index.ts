@@ -3,59 +3,57 @@ import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 
 const routes: Array<RouteRecordRaw> = [
-    {
-        // Parent route for all authentication-related pages
-        path: '/auth',
-        children: [
-            {
-                path: 'register',
-                name: 'Register',
-                component: () => import('../pages/auth/RegisterPage.vue')
-            },
-            {
-                path: 'login',
-                name: 'Login',
-                component: () => import('../pages/auth/LoginPage.vue')
-            },
-            {
-                path: 'verify',
-                name: 'Verify',
-                component: () => import('../pages/auth/VerifyPassword.vue')
-            },
-            {
-                path: 'forgot-password',
-                name: 'ForgotPassword',
-                component: () => import('../pages/auth/ForgotPassword.vue')
-            },
-            {
-                path: 'reset-password',
-                name: 'ResetPassword',
-                component: () => import('../pages/auth/ResetPassword.vue')
-            },
-            {
-                path: 'edupage',
-                name: 'EdupageConnect',
-                component: () => import('../pages/edupage/EdupageConnect.vue')
-            },
-            {
-                path: 'edupage/login',
-                name: 'EdupageLogin',
-                component: () => import('../pages/edupage/EdupageLogin.vue')
-            }
-        ]
-    },
+    // main page
     {
         path: '/home',
         name: 'HomePage',
-        component: HomePage // Без стрелочной функции
+        component: HomePage
+    },
+
+    // /auth
+    {
+        path: '/auth/register',
+        name: 'Register',
+        component: () => import('../pages/auth/RegisterPage.vue')
     },
     {
-        // Redirect empty root path to the login page
+        path: '/auth/login',
+        name: 'Login',
+        component: () => import('../pages/auth/LoginPage.vue')
+    },
+    {
+        path: '/auth/verify',
+        name: 'Verify',
+        component: () => import('../pages/auth/VerifyPassword.vue')
+    },
+    {
+        path: '/auth/forgot-password',
+        name: 'ForgotPassword',
+        component: () => import('../pages/auth/ForgotPassword.vue')
+    },
+    {
+        path: '/auth/reset-password',
+        name: 'ResetPassword',
+        component: () => import('../pages/auth/ResetPassword.vue')
+    },
+
+    // edupage
+    {
+        path: '/auth/edupage',
+        name: 'EdupageConnect',
+        component: () => import('../pages/edupage/EdupageConnect.vue')
+    },
+    {
+        path: '/auth/edupage/login',
+        name: 'EdupageLogin',
+        component: () => import('../pages/edupage/EdupageLogin.vue')
+    },
+    // system
+    {
         path: '/',
         redirect: '/auth/login'
     },
     {
-        // Catch-all route: redirects any undefined URL to the login page (404 handling)
         path: '/:pathMatch(.*)*',
         redirect: '/auth/login'
     }

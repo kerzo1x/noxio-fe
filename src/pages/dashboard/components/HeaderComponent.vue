@@ -3,7 +3,6 @@ import { ref, computed } from 'vue';
 import { useUserStore } from '@/stores/user';
 import { storeToRefs } from 'pinia';
 
-// Импорт ассетов
 import defaultAvatar from '@/assets/img/user.svg';
 import bellIcon from '@/assets/img/bell.svg';
 import arrowIcon from '@/assets/img/arrow.svg';
@@ -29,10 +28,8 @@ const sharedUsers = [1, 2, 3];
 <template>
   <header class="h-16 px-6 flex items-center justify-between bg-panel-bg border-b border-panel-input-border/50">
     
-    <!-- Левая часть (лого или пусто) -->
     <div class="flex-1"></div>
 
-    <!-- Поиск: 558px -->
     <div class="relative group w-[558px] mx-4">
       <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 text-panel-placeholder group-focus-within:text-panel-text transition-colors pointer-events-none" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="11" cy="11" r="8" />
@@ -46,13 +43,10 @@ const sharedUsers = [1, 2, 3];
       />
     </div>
 
-    <!-- Правая часть -->
     <div class="flex-1 flex items-center justify-end gap-[27px]">
       
-      <!-- Группа Share + Bell -->
       <div class="h-[24px] flex items-center justify-between gap-[27px]">
         <div class="flex items-center gap-[27px]">
-          <!-- Текст Share с использованием класса .text и прозрачностью 50% -->
           <button class="text opacity-50 hover:opacity-100 transition-opacity cursor-pointer leading-none">
             Share
           </button>
@@ -75,7 +69,6 @@ const sharedUsers = [1, 2, 3];
         </button>
       </div>
 
-      <!-- Блок пользователя -->
       <div class="flex items-center justify-end gap-[7px] cursor-pointer group">
         <div class="w-8 h-8 rounded-full overflow-hidden border border-panel-input-border bg-panel-input-bg">
           <img
@@ -86,7 +79,6 @@ const sharedUsers = [1, 2, 3];
           />
         </div>
         
-        <!-- Имя пользователя с использованием класса .text -->
         <span class="text truncate opacity-75 group-hover:opacity-100 transition-opacity">
           {{ userName }}
         </span>

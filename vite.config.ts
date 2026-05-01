@@ -11,7 +11,9 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
-
+  compilerOptions: {
+    types: ["vite/client"]
+  },
   server: {
     host: true,
     port: 5173,

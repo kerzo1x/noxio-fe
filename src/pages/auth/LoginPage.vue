@@ -42,14 +42,14 @@ const handleLogin = async () => {
                 isError.value = false
                 message.value = result.message
 
-                setTimeout(() => router.push('/home'), 1500)
+                setTimeout(() => router.push({name: 'HomePage'}), 1500)
             }
             // 2fa
             else if (result.data.requires2fa === true) {
                 localStorage.setItem('session_token', result.data.sessionToken);
                 isError.value = false
-                console.log('2fa')
-                setTimeout(() => router.push({name: 'Verify', query: {from: "login"}}), 1000)
+                message.value = result.message
+                setTimeout(() => router.push({name: 'Verify', query: {from: "login"}}), 1500)
 
             }
         } else {
@@ -68,6 +68,12 @@ const handleGoogleLogin = () => {
     // TODO: implement Google OAuth
 }
 
+const prefill = () => {
+    email.value = 'myronsnikers@gmail.com';
+    password.value = 'password1234';
+    handleLogin()
+}
+
 </script>
 
 <template>
@@ -79,7 +85,7 @@ const handleGoogleLogin = () => {
             <div class="w-full max-w-md space-y-6">
 
                 <h1 class="text-4xl font-bold text-panel-text">Log In</h1>
-
+                <base-button text="autologin" @click="prefill"/>
                 <form @submit.prevent="handleLogin" class="space-y-4">
                     <div class="flex flex-col gap-4">
                         <!-- <base-input></base-input>
