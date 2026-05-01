@@ -48,7 +48,8 @@ const handleLogin = async () => {
             else if (result.data.requires2fa === true) {
                 localStorage.setItem('session_token', result.data.sessionToken);
                 isError.value = false
-                router.push({path: '/auth/verify', query: {from: "login"}})
+                console.log('2fa')
+                setTimeout(() => router.push({name: 'Verify', query: {from: "login"}}), 1000)
 
             }
         } else {
