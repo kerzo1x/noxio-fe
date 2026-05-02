@@ -3,9 +3,9 @@ import { ref } from 'vue'
 import SidebarNav from '@/components/sidebar/SidebarNav.vue'
 import SidebarWorkspace from '@/components/sidebar/SidebarWorkspace.vue'
 import SidebarPicker from '@/components/sidebar/SidebarPicker.vue'
+import { useWorkspaceStore } from '@/stores/workspace'
 
-defineEmits(['pick'])
-
+const workspaceStore = useWorkspaceStore()
 const active = ref('')
 </script>
 
@@ -13,9 +13,12 @@ const active = ref('')
   <aside class="sidebar">
     <nav class="grow">
       <SidebarNav />
-      <SidebarWorkspace v-model:active="active" />
+      <SidebarWorkspace
+        v-if="workspaceStore.workspaces.length > 0"
+        v-model:active="active"
+      />
     </nav>
-    <SidebarPicker @pick="$emit('pick')" />
+    <SidebarPicker />
   </aside>
 </template>
 

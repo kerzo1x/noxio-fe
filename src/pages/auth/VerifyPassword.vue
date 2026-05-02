@@ -111,7 +111,7 @@ const handleVerify = async () => {
                     console.log('2 part')
                     localStorage.setItem('access_token', result.data.accessToken)
                     localStorage.removeItem('session_token')
-                    router.push(route.query.from === "register" ? '/auth/edupage' : '/home')
+                    router.push(route.query.from === "register" ? '/auth/edupage' : '/dashboard')
                     console.log('router push fucked up')
                 }
             }

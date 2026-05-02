@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import BaseButton from '../../components/buttons/BaseButton.vue'
+import BaseButton from '@/components/ui/buttons/BaseButton.vue'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 const handleSkip = () => {
-    router.push({ name: 'HomePage' })
+    router.push({ name: 'DashboardLayout' })
 }
 
 const handleSignIn = () => {

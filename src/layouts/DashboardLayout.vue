@@ -3,14 +3,17 @@ import { onMounted } from 'vue';
 import { useUserStore } from '@/stores/user';
 import HeaderComponent from '@/components/dashboard/HeaderComponent.vue';
 import BannerComponent from '@/components/dashboard/BannerComponent.vue';
-import SidebarLayout from '@/components/sidebar/SidebarLayout.vue';
-
+import SidebarLayout from './SidebarLayout.vue';
+import { useWorkspaceStore } from '@/stores/workspace';
 
 const userStore = useUserStore();
+const workspaceStore = useWorkspaceStore()
 
 onMounted(() => {
-  userStore.fetchUser();
-});
+  userStore.fetchUser()
+  workspaceStore.hydrateActiveWorkspaceFromLocalStorage()
+  workspaceStore.fetchWorkspaces()
+})
 </script>
 
 <template>

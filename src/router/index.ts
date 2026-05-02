@@ -1,13 +1,13 @@
-import HomePage from '../layouts/DashboardLayout.vue'
+import DashboardLayout from '../layouts/DashboardLayout.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 
 const routes: Array<RouteRecordRaw> = [
     // main page
     {
-        path: '/home',
-        name: 'HomePage',
-        component: HomePage
+        path: '/dashboard',
+        name: 'DashboardLayout',
+        component: DashboardLayout
     },
 
     // /auth

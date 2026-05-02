@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import BaseButton from '../../components/buttons/BaseButton.vue'
-import BaseInput from '../../components/inputs/BaseInput.vue'
+import BaseButton from '@/components/ui/buttons/BaseButton.vue'
+import BaseInput from '@/components/ui/inputs/BaseInput.vue'
 const router = useRouter()
 const isLoading = ref(false)
 const email = ref('')
@@ -13,7 +13,7 @@ const isError = ref(false)
 
 
 const handleSkip = async () => {
-    await router.push({ name: 'HomePage' })
+    await router.push({ name: 'DashboardLayout' })
 }
 
 const handleLogin = async () => {
@@ -45,7 +45,7 @@ const handleLogin = async () => {
 
         if (response.ok) {
             message.value = 'Integrated successfully!'
-            setTimeout(() => router.push('/home'), 1500)
+            setTimeout(() => router.push('/dashboard'), 1500)
         } else {
             isError.value = true
             message.value = data.error || 'Integration failed.'

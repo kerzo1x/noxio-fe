@@ -42,7 +42,7 @@ const handleLogin = async () => {
                 isError.value = false
                 message.value = result.message
 
-                setTimeout(() => router.push({name: 'HomePage'}), 1500)
+                setTimeout(() => router.push({name: 'DashboardLayout'}), 1500)
             }
             // 2fa
             else if (result.data.requires2fa === true) {
