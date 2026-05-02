@@ -3,8 +3,6 @@ import api from '@/api'
 
 /** Полный снимок для восстановления после логина / рефреша */
 const ACTIVE_WORKSPACE_LS_KEY = 'notion_fe_active_workspace'
-/** Старый формат — только id; читаем при миграции */
-const ACTIVE_WORKSPACE_ID_LEGACY = 'notion_fe_active_workspace_id'
 
 interface Workspace {
   id: string
@@ -28,8 +26,6 @@ function readCachedWorkspaceMeta(): { id: string; name: string } | null {
         }
       }
     }
-    const legacyId = localStorage.getItem(ACTIVE_WORKSPACE_ID_LEGACY)
-    if (legacyId) return { id: legacyId, name: '' }
   } catch {
     /* ignore */
   }
@@ -54,7 +50,6 @@ function persistActiveWorkspace(workspace: Workspace) {
       ACTIVE_WORKSPACE_LS_KEY,
       JSON.stringify({ id: workspace.id, name: workspace.name })
     )
-    localStorage.removeItem(ACTIVE_WORKSPACE_ID_LEGACY)
   } catch {
     /* ignore */
   }
@@ -63,7 +58,6 @@ function persistActiveWorkspace(workspace: Workspace) {
 function clearActiveWorkspaceStorage() {
   try {
     localStorage.removeItem(ACTIVE_WORKSPACE_LS_KEY)
-    localStorage.removeItem(ACTIVE_WORKSPACE_ID_LEGACY)
   } catch {
     /* ignore */
   }
