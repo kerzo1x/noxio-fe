@@ -1,4 +1,4 @@
-# notion-fe
+# Noxio(frontend)
 
 Frontend for a **Notion-style** workspace: organize pages and tasks in a familiar sidebar-and-content layout, switch between workspaces.
 
